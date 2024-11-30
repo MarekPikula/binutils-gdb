@@ -1371,6 +1371,7 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
   int (*riscv_disassembler) (bfd_vma, insn_t, const bfd_byte *,
 			     struct disassemble_info *);
   const char *default_arch = "rv64gc";
+  bfd *obfd = info->get_obfd_for_addr_func(memaddr, info);
 
   if (info->disassembler_options != NULL)
     {
@@ -1381,12 +1382,12 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
   else if (riscv_gpr_names == NULL)
     set_default_riscv_dis_options ();
 
-  if (info->abfd && bfd_get_flavour (info->abfd) == bfd_target_elf_flavour)
+  if (obfd && bfd_get_flavour (obfd) == bfd_target_elf_flavour)
     {
-      const char *sec_name = get_elf_backend_data (info->abfd)->obj_attrs_section;
-      if (bfd_get_section_by_name (info->abfd, sec_name) != NULL)
+      const char *sec_name = get_elf_backend_data (obfd)->obj_attrs_section;
+      if (bfd_get_section_by_name (obfd, sec_name) != NULL)
 	{
-	  obj_attribute *attr = elf_known_obj_attributes_proc (info->abfd);
+	  obj_attribute *attr = elf_known_obj_attributes_proc (obfd);
 	  unsigned int Tag_a = Tag_RISCV_priv_spec;
 	  unsigned int Tag_b = Tag_RISCV_priv_spec_minor;
 	  unsigned int Tag_c = Tag_RISCV_priv_spec_revision;
