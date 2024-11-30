@@ -1370,6 +1370,7 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
   enum riscv_seg_mstate mstate;
   int (*riscv_disassembler) (bfd_vma, insn_t, const bfd_byte *,
 			     struct disassemble_info *);
+  const char *default_arch = "rv64gc";
 
   if (info->disassembler_options != NULL)
     {
@@ -1379,6 +1380,26 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
     }
   else if (riscv_gpr_names == NULL)
     set_default_riscv_dis_options ();
+
+  if (info->abfd && bfd_get_flavour (info->abfd) == bfd_target_elf_flavour)
+    {
+      const char *sec_name = get_elf_backend_data (info->abfd)->obj_attrs_section;
+      if (bfd_get_section_by_name (info->abfd, sec_name) != NULL)
+	{
+	  obj_attribute *attr = elf_known_obj_attributes_proc (info->abfd);
+	  unsigned int Tag_a = Tag_RISCV_priv_spec;
+	  unsigned int Tag_b = Tag_RISCV_priv_spec_minor;
+	  unsigned int Tag_c = Tag_RISCV_priv_spec_revision;
+	  riscv_get_priv_spec_class_from_numbers (attr[Tag_a].i,
+						  attr[Tag_b].i,
+						  attr[Tag_c].i,
+						  &default_priv_spec);
+	  default_arch = attr[Tag_RISCV_arch].s;
+	}
+    }
+
+  riscv_release_subset_list (&riscv_subsets);
+  riscv_parse_subset (&riscv_rps_dis, default_arch);
 
   if (info->private_data == NULL && !riscv_init_disasm_info (info))
     return -1;
@@ -1419,33 +1440,6 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
   insn = (insn_t) bfd_get_bits (packet, dump_size * 8, false);
 
   return (*riscv_disassembler) (memaddr, insn, packet, info);
-}
-
-disassembler_ftype
-riscv_get_disassembler (bfd *abfd)
-{
-  const char *default_arch = "rv64gc";
-
-  if (abfd && bfd_get_flavour (abfd) == bfd_target_elf_flavour)
-    {
-      const char *sec_name = get_elf_backend_data (abfd)->obj_attrs_section;
-      if (bfd_get_section_by_name (abfd, sec_name) != NULL)
-	{
-	  obj_attribute *attr = elf_known_obj_attributes_proc (abfd);
-	  unsigned int Tag_a = Tag_RISCV_priv_spec;
-	  unsigned int Tag_b = Tag_RISCV_priv_spec_minor;
-	  unsigned int Tag_c = Tag_RISCV_priv_spec_revision;
-	  riscv_get_priv_spec_class_from_numbers (attr[Tag_a].i,
-						  attr[Tag_b].i,
-						  attr[Tag_c].i,
-						  &default_priv_spec);
-	  default_arch = attr[Tag_RISCV_arch].s;
-	}
-    }
-
-  riscv_release_subset_list (&riscv_subsets);
-  riscv_parse_subset (&riscv_rps_dis, default_arch);
-  return print_insn_riscv;
 }
 
 /* Prevent use of the fake labels that are generated as part of the DWARF

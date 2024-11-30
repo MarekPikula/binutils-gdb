@@ -1637,7 +1637,7 @@ print_insn_crisv10_v32_without_register_prefix (bfd_vma vma,
    FIXME: We should improve the solution to avoid the multitude of
    functions seen above.  */
 
-disassembler_ftype
+static disassembler_ftype
 cris_get_disassembler (bfd *abfd)
 {
   /* If there's no bfd in sight, we return what is valid as input in all
@@ -1663,6 +1663,13 @@ cris_get_disassembler (bfd *abfd)
   if (bfd_get_mach (abfd) == bfd_mach_cris_v10_v32)
     return print_insn_crisv10_v32_without_register_prefix;
   return print_insn_cris_without_register_prefix;
+}
+
+
+int
+print_insn_cris (bfd_vma vma, disassemble_info *info)
+{
+  return cris_get_disassembler(info->abfd)(vma, info);
 }
 
 /* Local variables:

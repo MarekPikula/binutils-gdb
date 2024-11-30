@@ -111,8 +111,7 @@
 disassembler_ftype
 disassembler (enum bfd_architecture a,
 	      bool big ATTRIBUTE_UNUSED,
-	      unsigned long mach ATTRIBUTE_UNUSED,
-	      bfd *abfd ATTRIBUTE_UNUSED)
+	      unsigned long mach ATTRIBUTE_UNUSED)
 {
   disassembler_ftype disassemble;
 
@@ -132,7 +131,7 @@ disassembler (enum bfd_architecture a,
 #endif
 #ifdef ARCH_arc
     case bfd_arch_arc:
-      disassemble = arc_get_disassembler (abfd);
+      disassemble = print_insn_arc;
       break;
 #endif
 #ifdef ARCH_arm
@@ -160,7 +159,7 @@ disassembler (enum bfd_architecture a,
 #endif
 #ifdef ARCH_cris
     case bfd_arch_cris:
-      disassemble = cris_get_disassembler (abfd);
+      disassemble = print_insn_cris;
       break;
 #endif
 #ifdef ARCH_crx
@@ -170,7 +169,7 @@ disassembler (enum bfd_architecture a,
 #endif
 #ifdef ARCH_csky
     case bfd_arch_csky:
-      disassemble = csky_get_disassembler (abfd);
+      disassemble = print_insn_csky;
       break;
 #endif
 
@@ -382,12 +381,12 @@ disassembler (enum bfd_architecture a,
 #endif
 #ifdef ARCH_riscv
     case bfd_arch_riscv:
-      disassemble = riscv_get_disassembler (abfd);
+      disassemble = print_insn_riscv;
       break;
 #endif
 #ifdef ARCH_rl78
     case bfd_arch_rl78:
-      disassemble = rl78_get_disassembler (abfd);
+      disassemble = print_insn_rl78;
       break;
 #endif
 #ifdef ARCH_rx
