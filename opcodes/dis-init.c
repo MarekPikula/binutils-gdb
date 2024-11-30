@@ -23,6 +23,14 @@
 #include "dis-asm.h"
 #include "bfd.h"
 
+static bfd *get_obfd_for_addr_default(bfd_vma memaddr ATTRIBUTE_UNUSED,
+				      struct disassemble_info* info)
+{
+  /* By default use abfd.  Mind that depending on the context, it might be
+     undefined (NULL).  */
+  return info->abfd;
+}
+
 void
 init_disassemble_info (struct disassemble_info *info, void *stream,
 		       fprintf_ftype fprintf_func,
@@ -34,6 +42,8 @@ init_disassemble_info (struct disassemble_info *info, void *stream,
   info->arch = bfd_arch_unknown;
   info->endian = BFD_ENDIAN_UNKNOWN;
   info->endian_code = info->endian;
+  info->abfd = NULL;
+  info->get_obfd_for_addr_func = get_obfd_for_addr_default;
   info->octets_per_byte = 1;
   info->fprintf_func = fprintf_func;
   info->fprintf_styled_func = fprintf_styled_func;
@@ -46,4 +56,3 @@ init_disassemble_info (struct disassemble_info *info, void *stream,
   info->display_endian = BFD_ENDIAN_UNKNOWN;
   info->created_styled_output = false;
 }
-

@@ -122,6 +122,13 @@ fprintf_styled_func (void *arg ATTRIBUTE_UNUSED,
   return 0;
 }
 
+static bfd *
+get_obfd_for_addr_func (bfd_vma memaddr ATTRIBUTE_UNUSED,
+			     struct disassemble_info* info ATTRIBUTE_UNUSED)
+{
+  return NULL;
+}
+
 /* Get LENGTH bytes from info's buffer, at target address memaddr.
    Transfer them to myaddr.  */
 static int
@@ -4363,6 +4370,8 @@ parse_x86_AVX_instruction (unsigned char *pc)
   dis_info.flavour = bfd_target_unknown_flavour;
   dis_info.endian = BFD_ENDIAN_UNKNOWN;
   dis_info.endian_code = dis_info.endian;
+  dis_info.abfd = NULL;
+  dis_info.get_obfd_for_addr_func = get_obfd_for_addr_func;
   dis_info.octets_per_byte = 1;
   dis_info.disassembler_needs_relocs = FALSE;
   dis_info.fprintf_func = fprintf_func;

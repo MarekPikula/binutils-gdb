@@ -141,9 +141,8 @@ typedef struct disassemble_info
   void *stream;
   void *application_data;
 
-  /* Target description.  We could replace this with a pointer to the bfd,
-     but that would require one.  There currently isn't any such requirement
-     so to avoid introducing one we record these explicitly.  */
+  /* Target description.  Not all contexts have abfd pointer defined, so we
+     record these explicitly.  */
   /* The bfd_flavour.  This can be bfd_target_unknown_flavour.  */
   enum bfd_flavour flavour;
   /* The bfd_arch value.  */
@@ -154,6 +153,12 @@ typedef struct disassemble_info
   enum bfd_endian endian;
   /* Endianness of code, for mixed-endian situations such as ARM BE8.  */
   enum bfd_endian endian_code;
+
+  /* Optional abfd pointer.  In some contexts it might be undefined (NULL).  */
+  bfd *abfd;
+  /* Get object bfd for given address.  In some contexts obfd might be
+     undefined (NULL).  */
+  bfd *(*get_obfd_for_addr_func) (bfd_vma, struct disassemble_info*);
 
   /* Some targets need information about the current section to accurately
      display insns.  If this is NULL, the target disassembler function
@@ -363,6 +368,8 @@ typedef struct
 typedef int (*disassembler_ftype) (bfd_vma, disassemble_info *);
 
 /* Disassemblers used out side of opcodes library.  */
+extern int print_insn_arc		(bfd_vma, disassemble_info *);
+extern int print_insn_cris		(bfd_vma, disassemble_info *);
 extern int print_insn_m32c		(bfd_vma, disassemble_info *);
 extern int print_insn_mep		(bfd_vma, disassemble_info *);
 extern int print_insn_s12z		(bfd_vma, disassemble_info *);
@@ -370,12 +377,10 @@ extern int print_insn_sh		(bfd_vma, disassemble_info *);
 extern int print_insn_sparc		(bfd_vma, disassemble_info *);
 extern int print_insn_rx		(bfd_vma, disassemble_info *);
 extern int print_insn_rl78		(bfd_vma, disassemble_info *);
+extern int print_insn_rl78_default	(bfd_vma, disassemble_info *);
 extern int print_insn_rl78_g10		(bfd_vma, disassemble_info *);
 extern int print_insn_rl78_g13		(bfd_vma, disassemble_info *);
 extern int print_insn_rl78_g14		(bfd_vma, disassemble_info *);
-
-extern disassembler_ftype arc_get_disassembler (bfd *);
-extern disassembler_ftype cris_get_disassembler (bfd *);
 
 extern void print_aarch64_disassembler_options (FILE *);
 extern void print_i386_disassembler_options (FILE *);
@@ -409,8 +414,7 @@ extern const disasm_options_and_args_t *disassembler_options_s390 (void);
    endian if BIG is true), bfd_mach value MACH, and ABFD, if that support
    is available.  ABFD may be NULL.  */
 extern disassembler_ftype disassembler (enum bfd_architecture arc,
-					bool big, unsigned long mach,
-					bfd *abfd);
+					bool big, unsigned long mach);
 
 /* Amend the disassemble_info structure as necessary for the target architecture.
    Should only be called after initialising the info->arch field.  */

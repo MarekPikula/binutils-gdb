@@ -231,6 +231,7 @@ sim_disasm_one (void)
 	  info.arch = bfd_arch_m32c;
 	  info.mach = default_machine;
 	}
+      info.abfd = current_bfd;
       disassemble_init_for_target (&info);
 
       storage = bfd_get_symtab_upper_bound (current_bfd);
