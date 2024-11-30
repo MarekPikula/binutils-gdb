@@ -4204,7 +4204,7 @@ disassemble_data (bfd *abfd)
   /* Use libopcodes to locate a suitable disassembler.  */
   aux.disassemble_fn = disassembler (bfd_get_arch (abfd),
 				     bfd_big_endian (abfd),
-				     bfd_get_mach (abfd), abfd);
+				     bfd_get_mach (abfd));
   if (!aux.disassemble_fn)
     {
       non_fatal (_("can't disassemble for architecture %s\n"),
@@ -4217,6 +4217,7 @@ disassemble_data (bfd *abfd)
   disasm_info.flavour = bfd_get_flavour (abfd);
   disasm_info.arch = bfd_get_arch (abfd);
   disasm_info.mach = bfd_get_mach (abfd);
+  disasm_info.abfd = abfd;
   disasm_info.disassembler_options = disassembler_options;
   disasm_info.octets_per_byte = bfd_octets_per_byte (abfd, NULL);
   disasm_info.skip_zeroes = DEFAULT_SKIP_ZEROES;

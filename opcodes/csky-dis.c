@@ -234,34 +234,6 @@ csky_symbol_is_valid (asymbol *sym,
   return name && *name != '$';
 }
 
-disassembler_ftype
-csky_get_disassembler (bfd *abfd)
-{
-  obj_attribute *attr;
-  const char *sec_name = NULL;
-  if (!abfd || bfd_get_flavour (abfd) != bfd_target_elf_flavour)
-    dis_info.isa = CSKY_DEFAULT_ISA;
-  else
-    {
-      mach_flag = elf_elfheader (abfd)->e_flags;
-
-      sec_name = get_elf_backend_data (abfd)->obj_attrs_section;
-      /* Skip any input that hasn't attribute section.
-         This enables to link object files without attribute section with
-         any others.  */
-      if (bfd_get_section_by_name (abfd, sec_name) != NULL)
-        {
-          attr = elf_known_obj_attributes_proc (abfd);
-          dis_info.isa = attr[Tag_CSKY_ISA_EXT_FLAGS].i;
-          dis_info.isa <<= 32;
-          dis_info.isa |= attr[Tag_CSKY_ISA_FLAGS].i;
-        }
-      else
-        dis_info.isa = CSKY_DEFAULT_ISA;
-    }
-
-   return print_insn_csky;
-}
 
 /* Parse the string of disassembler options.  */
 static void
@@ -1048,6 +1020,8 @@ print_insn_csky (bfd_vma memaddr, struct disassemble_info *info)
   int is_data = false;
   void (*printer) (bfd_vma, struct disassemble_info *, long);
   unsigned int  size = 4;
+  obj_attribute *attr;
+  const char *sec_name = NULL;
 
   memset (str, 0, sizeof (str));
   info->bytes_per_chunk = 0;
@@ -1055,6 +1029,30 @@ print_insn_csky (bfd_vma memaddr, struct disassemble_info *info)
   dis_info.mem = memaddr;
   dis_info.info = info;
   dis_info.need_output_symbol = 0;
+
+  /* TODO: Evaluate if it would be better to use
+     info->get_obfd_for_addr_func() to detect extensions in disassembled
+     object file and not in abfd.  */
+  if (!info->abfd || bfd_get_flavour (info->abfd) != bfd_target_elf_flavour)
+    dis_info.isa = CSKY_DEFAULT_ISA;
+  else
+    {
+      mach_flag = elf_elfheader (info->abfd)->e_flags;
+
+      sec_name = get_elf_backend_data (info->abfd)->obj_attrs_section;
+      /* Skip any input that hasn't attribute section.
+         This enables to link object files without attribute section with
+         any others.  */
+      if (bfd_get_section_by_name (info->abfd, sec_name) != NULL)
+        {
+          attr = elf_known_obj_attributes_proc (info->abfd);
+          dis_info.isa = attr[Tag_CSKY_ISA_EXT_FLAGS].i;
+          dis_info.isa <<= 32;
+          dis_info.isa |= attr[Tag_CSKY_ISA_FLAGS].i;
+        }
+      else
+        dis_info.isa = CSKY_DEFAULT_ISA;
+    }
 
   if (info->disassembler_options)
     {

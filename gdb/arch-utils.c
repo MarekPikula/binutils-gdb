@@ -1039,7 +1039,7 @@ default_print_insn (bfd_vma memaddr, disassemble_info *info)
   disassembler_ftype disassemble_fn;
 
   disassemble_fn = disassembler (info->arch, info->endian == BFD_ENDIAN_BIG,
-				 info->mach, current_program_space->exec_bfd ());
+				 info->mach);
 
   gdb_assert (disassemble_fn != NULL);
   int res = (*disassemble_fn) (memaddr, info);

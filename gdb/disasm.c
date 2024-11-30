@@ -944,6 +944,18 @@ get_all_disassembler_options (struct gdbarch *gdbarch)
   return string_printf ("%s%s%s", implicit, comma, options);
 }
 
+/* Get obfd for a given address.  If not available, fallback to abfd.  Mind
+   that depending on context, abfd might also be undefined (NULL).  */
+
+static bfd *
+get_obfd_for_address(bfd_vma memaddr, struct disassemble_info* info) {
+  struct objfile *ofile = current_program_space->objfile_for_address (memaddr);
+  if (ofile)
+    return ofile->obfd.get ();
+
+  return info->abfd;
+}
+
 gdb_disassembler::gdb_disassembler (struct gdbarch *gdbarch,
 				    struct ui_file *file,
 				    read_memory_ftype func)
@@ -1024,6 +1036,8 @@ gdb_disassemble_info::gdb_disassemble_info
   m_di.mach = gdbarch_bfd_arch_info (gdbarch)->mach;
   m_di.endian = gdbarch_byte_order (gdbarch);
   m_di.endian_code = gdbarch_byte_order_for_code (gdbarch);
+  m_di.abfd = current_program_space->exec_bfd ();
+  m_di.get_obfd_for_addr_func = get_obfd_for_address;
   m_di.application_data = this;
   m_disassembler_options_holder = get_all_disassembler_options (gdbarch);
   if (!m_disassembler_options_holder.empty ())
