@@ -1,0 +1,3636 @@
+V[dst] 3
+  P 03
+  P 04
+  P 05
+  P 06
+  P 07
+0000 0000  /** 0000 0000            BRK */
+0000 0100  /** 0000 0100            NOP */
+0000 0---  /** 0000 0s ds           MOV.B:S R0L/R0H,dest */
+0000 1---  /** 0000 1d sr           MOV.B:S src,R0L/R0H */
+0001 0---  /** 0001 0d sr           AND.B:S src,R0L/R0H */
+0001 1---  /** 0001 1d sr           OR.B:S src,R0L/R0H */
+0010 0---  /** 0010 0d sr           ADD.B:S src,R0L/R0H */
+0010 1---  /** 0010 1d sr           SUB.B:S src,R0L/R0H */
+0011 0---  /** 0011 0d sr           MOV.B:S src,dest */
+0011 1---  /** 0011 1d sr           CMP.B:S src,R0L/R0H */
+0100 0---  /** 0100 0bit            BCLR:S bit,base:11[SB] */
+0100 1---  /** 0100 1bit            BSET:S bit,base:11[SB] */
+0101 0---  /** 0101 0bit            BNOT:S bit,base:11[SB] */
+0101 1---  /** 0101 1bit            BTST:S bit,base:11[SB] */
+0110 0---  /** 0110 0dsp            JMP.S label */
+0110 1---  /** 0110 1cnd            Jcnd label */
+1000 0---  /** 1000 0dst            ADD.B:S #IMM8,dst */
+[vary dst shift 0]
+1000 1---  /** 1000 1dst            SUB.B:S #IMM8,dest */
+[vary dst shift 0]
+1000 -010  /** 1000 s010            PUSH.B:S src */
+1001 0---  /** 1001 0dst            AND.B:S #IMM8,dest */
+[vary dst shift 0]
+1001 1---  /** 1001 1dst            OR.B:S #IMM8,dest */
+[vary dst shift 0]
+1001 -010  /** 1001 d010            POP.B:S dest */
+1010 0---  /** 1010 0dst            INC.B dest */
+[vary dst shift 0]
+1010 1---  /** 1010 1dst            DEC.B dest */
+[vary dst shift 0]
+1011 0---  /** 1011 0dst            MOV.B:Z #0,dest */
+[vary dst shift 0]
+1011 1---  /** 1011 1dst            NOT.B:S dest */
+[vary dst shift 0]
+1011 -010  /** 1011 d010            INC.W dest */
+1100 0---  /** 1100 0dst            MOV.B:S #IMM8,dest */
+[vary dst shift 0]
+1100 1---  /** 1100 1dst            STZ #IMM8,dest */
+[vary dst shift 0]
+1100 -010  /** 1100 s010            PUSH.W:S src */
+1101 0---  /** 1101 0dst            STNZ #IMM8,dest */
+[vary dst shift 0]
+1101 1---  /** 1101 1dst            STZX #IMM81,#IMM82,dest */
+[vary dst shift 0]
+1101 -010  /** 1101 d010            POP.W:S dest */
+1110 0---  /** 1110 0dst            CMP.B:S #IMM8,dest */
+[vary dst shift 0]
+1110 1100  /** 1110 1100            PUSHM src */
+1110 1101  /** 1110 1101            POPM dest */
+1110 1110  /** 1110 1110            JMPS #IMM8 */
+1110 1111  /** 1110 1111            JSRS #IMM8 */
+1111 0011  /** 1111 0011            RTS */
+1111 0100  /** 1111 0100            JMP.W label */
+1111 0101  /** 1111 0101            JSR.W label */
+1111 0110  /** 1111 0110            INTO */
+1111 1011  /** 1111 1011            REIT */
+1111 1100  /** 1111 1100            JMP.A label */
+1111 1101  /** 1111 1101            JSR.A label */
+1111 1110  /** 1111 1110            JMP.B label */
+1111 1111  /** 1111 1111            UND */
+1111 -010  /** 1111 d010            DEC.W dest */
+1-10 -010  /** 1w10 d010            MOV.size:S #IMM,dest */
+0111 000- ---- ----  /** 0111 000w srcx dest  MULU.size src,dest */
+0111 001- ---- ----  /** 0111 001w srcx dest  MOV.size:G src,dest */
+0111 010- 0000 ----  /** 0111 010w 0000 srcx  STE.size src,abs20 */
+0111 010- 0001 ----  /** 0111 010w 0001 srcx  STE.size src,disp20[a0] */
+0111 010- 0010 ----  /** 0111 010w 0010 srcx  STE.size src,[a1a0] */
+0111 010- 0011 ----  /** 0111 010w 0011 srcx  MOV.size:G src, disp8[SP] */
+0111 010- 0100 ----  /** 0111 010w 0100 srcx  PUSH.size:G src */
+0111 010- 0101 ----  /** 0111 010w 0101 dest  NEG.size dest */
+0111 010- 0110 ----  /** 0111 010w 0110 dest  ROT.size R1H,dest */
+0111 010- 0111 ----  /** 0111 010w 0111 dest  NOT.size:G */
+0111 010- 1000 ----  /** 0111 010w 1000 dest  LDE.size abs20,dest */
+0111 010- 1001 ----  /** 0111 010w 1001 dest  LDE.size dsp:20[a0], dest */
+0111 010- 1010 ----  /** 0111 010w 1010 dest  LDE.size [a1a0],dest */
+0111 010- 1011 ----  /** 0111 010w 1011 dest  MOV.size:G dsp:8[SP], dest */
+0111 010- 1100 ----  /** 0111 010w 1100 dest  MOV.size:G #IMM,dest */
+0111 010- 1101 ----  /** 0111 010w 1101 dest  POP.size:G dest */
+0111 010- 1110 ----  /** 0111 010w 1110 dest  SHL.size R1H,dest */
+0111 010- 1111 ----  /** 0111 010w 1111 dest  SHA.size R1H,dest */
+0111 011- 0000 ----  /** 0111 011w 0000 dest  TST.size #IMM, dest */
+0111 011- 0001 ----  /** 0111 011w 0001 dest  XOR.size #IMM,dest */
+0111 011- 0010 ----  /** 0111 011w 0010 dest  AND.size:G #IMM,dest */
+0111 011- 0011 ----  /** 0111 011w 0011 dest  OR.size:G #IMM,dest */
+0111 011- 0100 ----  /** 0111 011w 0100 dest  ADD.size:G #imm,dest */
+0111 011- 0101 ----  /** 0111 011w 0101 dest  SUB.size:G #IMM,dest */
+0111 011- 0110 ----  /** 0111 011w 0110 dest  ADC.size #IMM,dest */
+0111 011- 0111 ----  /** 0111 011w 0111 dest  SBB.size #IMM,dest */
+0111 011- 1000 ----  /** 0111 011w 1000 dest  CMP.size:G #IMM,dest */
+0111 011- 1001 ----  /** 0111 011w 1001 srcx  DIVX.size src */
+0111 011- 1010 ----  /** 0111 011w 1010 dest  ROLC.size dest */
+0111 011- 1011 ----  /** 0111 011w 1011 dest  RORC.size dest */
+0111 011- 1100 ----  /** 0111 011w 1100 srcx  DIVU.size src */
+0111 011- 1101 ----  /** 0111 011w 1101 srcx  DIV.size src */
+0111 011- 1110 ----  /** 0111 011w 1110 dest  ADCF.size dest */
+0111 011- 1111 ----  /** 0111 011w 1111 dest  ABS.size dest */
+0111 100- ---- ----  /** 0111 100w srcx dest  MUL.size src,dest */
+0111 1010 1--- ----  /** 0111 1010 1reg srcx  LDC src,dest */
+0111 1011 1--- ----  /** 0111 1011 1src dest  STC src,dest */
+0111 101- 00-- ----  /** 0111 101w 00sr dest  XCHG.size src,dest */
+0111 1100 00-- ----  /** 0111 1100 00hl srcx  MOVdir src,R0L */
+0111 1100 0110 ----  /** 0111 1100 0110 dest  EXTS.B dest */
+0111 1100 10-- ----  /** 0111 1100 10hl dest  MOVdir R0L,dest */
+0111 1100 1100 ----  /** 0111 1100 1100 dest  STC PC,dest */
+0111 1100 1111 0000  /** 0111 1100 1111 0000  LDCTX abs16,abs20 */
+0111 1100 1111 0010  /** 0111 1100 1111 0010  ENTER #IMM8 */
+0111 1100 1111 0011  /** 0111 1100 1111 0011  EXTS.W R0 */
+0111 1101 0000 ----  /** 0111 1101 0000 srcx  JMPI.A src */
+0111 1101 0001 ----  /** 0111 1101 0001 srcx  JSRI.A src */
+0111 1101 0010 ----  /** 0111 1101 0010 srcx  JMPI.W src */
+0111 1101 0011 ----  /** 0111 1101 0011 srcx  JSRI.W src */
+0111 1101 1001 ----  /** 0111 1101 1001 srcx  PUSHA src */
+0111 1101 1010 0---  /** 0111 1101 1010 0flg  LDIPL #IMM */
+0111 1101 1011 ----  /** 0111 1101 1011 immm  ADD.size:Q #IMM,sp */
+0111 1101 1100 ----  /** 0111 1101 1100 cond  Jcnd label */
+0111 1101 1101 ----  /** 0111 1101 1101 cond  BMcnd C  */
+0111 1101 1111 0000  /** 0111 1101 1111 0000  STCTX abs16,abs20 */
+0111 1101 1111 0010  /** 0111 1101 1111 0010  EXITD */
+0111 1101 1111 0011  /** 0111 1101 1111 0011  WAIT */
+0111 110- 0100 ----  /** 0111 110w 0100 dest  MULU.size #IMM,dest */
+0111 110- 0101 ----  /** 0111 110w 0101 dest  MUL.size #IMM,dest */
+0111 110- 1110 0000  /** 0111 110w 1110 0000  DIVU.size #IMM */
+0111 110- 1110 0001  /** 0111 110w 1110 0001  DIV.size #IMM */
+0111 110- 1110 0010  /** 0111 110w 1110 0010  PUSH.size:G #IMM */
+0111 110- 1110 0011  /** 0111 110w 1110 0011  DIVX.size #IMM */
+0111 110- 1110 100-  /** 0111 110w 1110 100z  SMOVB.size */
+0111 110- 1110 1010  /** 0111 110w 1110 1010  SSTR.size */
+0111 110- 1110 1011  /** 0111 110w 1110 1011  ADD.size:G #IMM,sp */
+0111 110- 1110 -1--  /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+0111 110- 1111 0001  /** 0111 110w 1111 0001  RMPA.size */
+0111 1110 0000 ----  /** 0111 1110 0000 dest  BTSTC dest */
+0111 1110 0001 ----  /** 0111 1110 0001 dest  BTSTS dest */
+0111 1110 0010 ----  /** 0111 1110 0010 dest  BMcnd dest  */
+0111 1110 0011 ----  /** 0111 1110 0011 srcx  BNTST src */
+0111 1110 0100 ----  /** 0111 1110 0100 srcx  BAND src */
+0111 1110 0101 ----  /** 0111 1110 0101 srcx  BNAND src */
+0111 1110 0110 ----  /** 0111 1110 0110 srcx  BOR src */
+0111 1110 0111 ----  /** 0111 1110 0111 srcx  BNOR src */
+0111 1110 1000 ----  /** 0111 1110 1000 dest  BCLR:G dest */
+0111 1110 1001 ----  /** 0111 1110 1001 dest  BSET:G dest */
+0111 1110 1010 ----  /** 0111 1110 1010 dest  BNOT:G dest */
+0111 1110 1011 ----  /** 0111 1110 1011 srcx  BTST:G src */
+0111 1110 1100 ----  /** 0111 1110 1100 srcx  BXOR src */
+0111 1110 1101 ----  /** 0111 1110 1101 srcx  BNXOR src */
+1000 000- ---- ----  /** 1000 000w srcx dest  TST.size src,dest */
+1000 100- ---- ----  /** 1000 100w srcx dest  XOR.size src,dest */
+1001 000- ---- ----  /** 1001 000w srcx dest  AND.size:G src.dest */
+1001 100- ---- ----  /** 1001 100w srcx dest  OR.size:G src,dest */
+1010 000- ---- ----  /** 1010 000w srcx dest  ADD.size:G src,dest */
+1010 100- ---- ----  /** 1010 100w srcx dest  SUB.size:G src,dest */
+1011 000- ---- ----  /** 1011 000w srcx dest  ADC.size src,dest */
+1011 100- ---- ----  /** 1011 100w srcx dest  SBB.size src,dest */
+1100 000- ---- ----  /** 1100 000w srcx dest  CMP.size:G src,dest */
+1100 100- ---- ----  /** 1100 100w immm dest  ADD.size:Q #IMM,dest */
+1101 000- ---- ----  /** 1101 000w immm dest  CMP.size:Q #IMM,dest */
+1101 100- ---- ----  /** 1101 100w immm dest  MOV.size:Q #IMM,dest */
+1110 000- ---- ----  /** 1110 000w immm dest  ROT.size #IMM,dest */
+1110 100- ---- ----  /** 1110 100w immm dest  SHL.size #IMM, dest */
+1110 1011 000- 0001  /** 1110 1011 000d 0001  SHL.L R1H,dest */
+1110 1011 001- 0001  /** 1110 1011 001d 0001  SHA.L R1H,dest */
+1110 1011 0--- 0100  /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0--- 0101  /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0--- 0000  /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0--- 0011  /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0--- 1---  /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0--- 0010  /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 100- ----  /** 1110 1011 100d immm  SHL.L #IMM,dest */
+1110 1011 101- ----  /** 1110 1011 101d immm  SHA.L #IMM, dest */
+1110 1011 11-- ----  /** 1110 1011 11vector   INT #imm */
+1111 000- ---- ----  /** 1111 000w immm dest  SHA.size #IMM, dest */
+1111 100- ---- ----  /** 1111 100w immm dest  ADJNZ.size #IMM,dest,label */
+
+mask: ff          /** 0000 0000            BRK */
+bits: 00          (00000000) 1 byte
+
+mask: ff          /** 0000 0100            NOP */
+bits: 04          (00000100) 1 byte
+
+mask: f8          /** 0000 0s ds           MOV.B:S R0L/R0H,dest */
+bits: 00          (00000sds) 1 byte
+
+mask: f8          /** 0000 1d sr           MOV.B:S src,R0L/R0H */
+bits: 08          (00001dsr) 1 byte
+
+mask: f8          /** 0001 0d sr           AND.B:S src,R0L/R0H */
+bits: 10          (00010dsr) 1 byte
+
+mask: f8          /** 0001 1d sr           OR.B:S src,R0L/R0H */
+bits: 18          (00011dsr) 1 byte
+
+mask: f8          /** 0010 0d sr           ADD.B:S src,R0L/R0H */
+bits: 20          (00100dsr) 1 byte
+
+mask: f8          /** 0010 1d sr           SUB.B:S src,R0L/R0H */
+bits: 28          (00101dsr) 1 byte
+
+mask: f8          /** 0011 0d sr           MOV.B:S src,dest */
+bits: 30          (00110dsr) 1 byte
+
+mask: f8          /** 0011 1d sr           CMP.B:S src,R0L/R0H */
+bits: 38          (00111dsr) 1 byte
+
+mask: f8          /** 0100 0bit            BCLR:S bit,base:11[SB] */
+bits: 40          (01000bit) 1 byte
+
+mask: f8          /** 0100 1bit            BSET:S bit,base:11[SB] */
+bits: 48          (01001bit) 1 byte
+
+mask: f8          /** 0101 0bit            BNOT:S bit,base:11[SB] */
+bits: 50          (01010bit) 1 byte
+
+mask: f8          /** 0101 1bit            BTST:S bit,base:11[SB] */
+bits: 58          (01011bit) 1 byte
+
+mask: f8          /** 0110 0dsp            JMP.S label */
+bits: 60          (01100dsp) 1 byte
+
+mask: f8          /** 0110 1cnd            Jcnd label */
+bits: 68          (01101cnd) 1 byte
+
+mask: f8          /** 1000 0dst            ADD.B:S #IMM8,dst */
+bits: 80          (10000dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1000 1dst            SUB.B:S #IMM8,dest */
+bits: 88          (10001dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f7          /** 1000 s010            PUSH.B:S src */
+bits: 82          (1000s010) 1 byte
+
+mask: f8          /** 1001 0dst            AND.B:S #IMM8,dest */
+bits: 90          (10010dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1001 1dst            OR.B:S #IMM8,dest */
+bits: 98          (10011dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f7          /** 1001 d010            POP.B:S dest */
+bits: 92          (1001d010) 1 byte
+
+mask: f8          /** 1010 0dst            INC.B dest */
+bits: a0          (10100dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1010 1dst            DEC.B dest */
+bits: a8          (10101dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1011 0dst            MOV.B:Z #0,dest */
+bits: b0          (10110dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1011 1dst            NOT.B:S dest */
+bits: b8          (10111dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f7          /** 1011 d010            INC.W dest */
+bits: b2          (1011d010) 1 byte
+
+mask: f8          /** 1100 0dst            MOV.B:S #IMM8,dest */
+bits: c0          (11000dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1100 1dst            STZ #IMM8,dest */
+bits: c8          (11001dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f7          /** 1100 s010            PUSH.W:S src */
+bits: c2          (1100s010) 1 byte
+
+mask: f8          /** 1101 0dst            STNZ #IMM8,dest */
+bits: d0          (11010dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f8          /** 1101 1dst            STZX #IMM81,#IMM82,dest */
+bits: d8          (11011dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: f7          /** 1101 d010            POP.W:S dest */
+bits: d2          (1101d010) 1 byte
+
+mask: f8          /** 1110 0dst            CMP.B:S #IMM8,dest */
+bits: e0          (11100dst) 1 byte
+varybits: vary dst ob 0
+varybits: vary dst ob 1
+varybits: vary dst ob 2
+varybits: vary dst ob 3
+  found at 0
+varybits: vary dst ob 4
+  found at 1
+varybits: vary dst ob 5
+  found at 2
+varybits: vary dst ob 6
+  found at 3
+varybits: vary dst ob 7
+  found at 4
+
+mask: ff          /** 1110 1100            PUSHM src */
+bits: ec          (11101100) 1 byte
+
+mask: ff          /** 1110 1101            POPM dest */
+bits: ed          (11101101) 1 byte
+
+mask: ff          /** 1110 1110            JMPS #IMM8 */
+bits: ee          (11101110) 1 byte
+
+mask: ff          /** 1110 1111            JSRS #IMM8 */
+bits: ef          (11101111) 1 byte
+
+mask: ff          /** 1111 0011            RTS */
+bits: f3          (11110011) 1 byte
+
+mask: ff          /** 1111 0100            JMP.W label */
+bits: f4          (11110100) 1 byte
+
+mask: ff          /** 1111 0101            JSR.W label */
+bits: f5          (11110101) 1 byte
+
+mask: ff          /** 1111 0110            INTO */
+bits: f6          (11110110) 1 byte
+
+mask: ff          /** 1111 1011            REIT */
+bits: fb          (11111011) 1 byte
+
+mask: ff          /** 1111 1100            JMP.A label */
+bits: fc          (11111100) 1 byte
+
+mask: ff          /** 1111 1101            JSR.A label */
+bits: fd          (11111101) 1 byte
+
+mask: ff          /** 1111 1110            JMP.B label */
+bits: fe          (11111110) 1 byte
+
+mask: ff          /** 1111 1111            UND */
+bits: ff          (11111111) 1 byte
+
+mask: f7          /** 1111 d010            DEC.W dest */
+bits: f2          (1111d010) 1 byte
+
+mask: b7          /** 1w10 d010            MOV.size:S #IMM,dest */
+bits: a2          (1w10d010) 1 byte
+
+mask: fe 00       /** 0111 000w srcx dest  MULU.size src,dest */
+bits: 70 00       (0111000wsrcxdest) 1 byte
+
+mask: fe 00       /** 0111 001w srcx dest  MOV.size:G src,dest */
+bits: 72 00       (0111001wsrcxdest) 1 byte
+
+mask: fe f0       /** 0111 010w 0000 srcx  STE.size src,abs20 */
+bits: 74 00       (0111010w0000srcx) 2 bytes
+
+mask: fe f0       /** 0111 010w 0001 srcx  STE.size src,disp20[a0] */
+bits: 74 10       (0111010w0001srcx) 2 bytes
+
+mask: fe f0       /** 0111 010w 0010 srcx  STE.size src,[a1a0] */
+bits: 74 20       (0111010w0010srcx) 2 bytes
+
+mask: fe f0       /** 0111 010w 0011 srcx  MOV.size:G src, disp8[SP] */
+bits: 74 30       (0111010w0011srcx) 2 bytes
+
+mask: fe f0       /** 0111 010w 0100 srcx  PUSH.size:G src */
+bits: 74 40       (0111010w0100srcx) 2 bytes
+
+mask: fe f0       /** 0111 010w 0101 dest  NEG.size dest */
+bits: 74 50       (0111010w0101dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 0110 dest  ROT.size R1H,dest */
+bits: 74 60       (0111010w0110dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 0111 dest  NOT.size:G */
+bits: 74 70       (0111010w0111dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1000 dest  LDE.size abs20,dest */
+bits: 74 80       (0111010w1000dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1001 dest  LDE.size dsp:20[a0], dest */
+bits: 74 90       (0111010w1001dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1010 dest  LDE.size [a1a0],dest */
+bits: 74 a0       (0111010w1010dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1011 dest  MOV.size:G dsp:8[SP], dest */
+bits: 74 b0       (0111010w1011dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1100 dest  MOV.size:G #IMM,dest */
+bits: 74 c0       (0111010w1100dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1101 dest  POP.size:G dest */
+bits: 74 d0       (0111010w1101dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1110 dest  SHL.size R1H,dest */
+bits: 74 e0       (0111010w1110dest) 2 bytes
+
+mask: fe f0       /** 0111 010w 1111 dest  SHA.size R1H,dest */
+bits: 74 f0       (0111010w1111dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0000 dest  TST.size #IMM, dest */
+bits: 76 00       (0111011w0000dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0001 dest  XOR.size #IMM,dest */
+bits: 76 10       (0111011w0001dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0010 dest  AND.size:G #IMM,dest */
+bits: 76 20       (0111011w0010dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0011 dest  OR.size:G #IMM,dest */
+bits: 76 30       (0111011w0011dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0100 dest  ADD.size:G #imm,dest */
+bits: 76 40       (0111011w0100dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0101 dest  SUB.size:G #IMM,dest */
+bits: 76 50       (0111011w0101dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0110 dest  ADC.size #IMM,dest */
+bits: 76 60       (0111011w0110dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 0111 dest  SBB.size #IMM,dest */
+bits: 76 70       (0111011w0111dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 1000 dest  CMP.size:G #IMM,dest */
+bits: 76 80       (0111011w1000dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 1001 srcx  DIVX.size src */
+bits: 76 90       (0111011w1001srcx) 2 bytes
+
+mask: fe f0       /** 0111 011w 1010 dest  ROLC.size dest */
+bits: 76 a0       (0111011w1010dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 1011 dest  RORC.size dest */
+bits: 76 b0       (0111011w1011dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 1100 srcx  DIVU.size src */
+bits: 76 c0       (0111011w1100srcx) 2 bytes
+
+mask: fe f0       /** 0111 011w 1101 srcx  DIV.size src */
+bits: 76 d0       (0111011w1101srcx) 2 bytes
+
+mask: fe f0       /** 0111 011w 1110 dest  ADCF.size dest */
+bits: 76 e0       (0111011w1110dest) 2 bytes
+
+mask: fe f0       /** 0111 011w 1111 dest  ABS.size dest */
+bits: 76 f0       (0111011w1111dest) 2 bytes
+
+mask: fe 00       /** 0111 100w srcx dest  MUL.size src,dest */
+bits: 78 00       (0111100wsrcxdest) 1 byte
+
+mask: ff 80       /** 0111 1010 1reg srcx  LDC src,dest */
+bits: 7a 80       (011110101regsrcx) 2 bytes
+
+mask: ff 80       /** 0111 1011 1src dest  STC src,dest */
+bits: 7b 80       (011110111srcdest) 2 bytes
+
+mask: fe c0       /** 0111 101w 00sr dest  XCHG.size src,dest */
+bits: 7a 00       (0111101w00srdest) 2 bytes
+
+mask: ff c0       /** 0111 1100 00hl srcx  MOVdir src,R0L */
+bits: 7c 00       (0111110000hlsrcx) 2 bytes
+
+mask: ff f0       /** 0111 1100 0110 dest  EXTS.B dest */
+bits: 7c 60       (011111000110dest) 2 bytes
+
+mask: ff c0       /** 0111 1100 10hl dest  MOVdir R0L,dest */
+bits: 7c 80       (0111110010hldest) 2 bytes
+
+mask: ff f0       /** 0111 1100 1100 dest  STC PC,dest */
+bits: 7c c0       (011111001100dest) 2 bytes
+
+mask: ff ff       /** 0111 1100 1111 0000  LDCTX abs16,abs20 */
+bits: 7c f0       (0111110011110000) 2 bytes
+
+mask: ff ff       /** 0111 1100 1111 0010  ENTER #IMM8 */
+bits: 7c f2       (0111110011110010) 2 bytes
+
+mask: ff ff       /** 0111 1100 1111 0011  EXTS.W R0 */
+bits: 7c f3       (0111110011110011) 2 bytes
+
+mask: ff f0       /** 0111 1101 0000 srcx  JMPI.A src */
+bits: 7d 00       (011111010000srcx) 2 bytes
+
+mask: ff f0       /** 0111 1101 0001 srcx  JSRI.A src */
+bits: 7d 10       (011111010001srcx) 2 bytes
+
+mask: ff f0       /** 0111 1101 0010 srcx  JMPI.W src */
+bits: 7d 20       (011111010010srcx) 2 bytes
+
+mask: ff f0       /** 0111 1101 0011 srcx  JSRI.W src */
+bits: 7d 30       (011111010011srcx) 2 bytes
+
+mask: ff f0       /** 0111 1101 1001 srcx  PUSHA src */
+bits: 7d 90       (011111011001srcx) 2 bytes
+
+mask: ff f8       /** 0111 1101 1010 0flg  LDIPL #IMM */
+bits: 7d a0       (0111110110100flg) 2 bytes
+
+mask: ff f0       /** 0111 1101 1011 immm  ADD.size:Q #IMM,sp */
+bits: 7d b0       (011111011011immm) 2 bytes
+
+mask: ff f0       /** 0111 1101 1100 cond  Jcnd label */
+bits: 7d c0       (011111011100cond) 2 bytes
+
+mask: ff f0       /** 0111 1101 1101 cond  BMcnd C  */
+bits: 7d d0       (011111011101cond) 2 bytes
+
+mask: ff ff       /** 0111 1101 1111 0000  STCTX abs16,abs20 */
+bits: 7d f0       (0111110111110000) 2 bytes
+
+mask: ff ff       /** 0111 1101 1111 0010  EXITD */
+bits: 7d f2       (0111110111110010) 2 bytes
+
+mask: ff ff       /** 0111 1101 1111 0011  WAIT */
+bits: 7d f3       (0111110111110011) 2 bytes
+
+mask: fe f0       /** 0111 110w 0100 dest  MULU.size #IMM,dest */
+bits: 7c 40       (0111110w0100dest) 2 bytes
+
+mask: fe f0       /** 0111 110w 0101 dest  MUL.size #IMM,dest */
+bits: 7c 50       (0111110w0101dest) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 0000  DIVU.size #IMM */
+bits: 7c e0       (0111110w11100000) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 0001  DIV.size #IMM */
+bits: 7c e1       (0111110w11100001) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 0010  PUSH.size:G #IMM */
+bits: 7c e2       (0111110w11100010) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 0011  DIVX.size #IMM */
+bits: 7c e3       (0111110w11100011) 2 bytes
+
+mask: fe fe       /** 0111 110w 1110 100z  SMOVB.size */
+bits: 7c e8       (0111110w1110100z) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 1010  SSTR.size */
+bits: 7c ea       (0111110w11101010) 2 bytes
+
+mask: fe ff       /** 0111 110w 1110 1011  ADD.size:G #IMM,sp */
+bits: 7c eb       (0111110w11101011) 2 bytes
+
+mask: fe f4       /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+bits: 7c e4       (0111110w1110i1cs) 2 bytes
+
+mask: fe ff       /** 0111 110w 1111 0001  RMPA.size */
+bits: 7c f1       (0111110w11110001) 2 bytes
+
+mask: ff f0       /** 0111 1110 0000 dest  BTSTC dest */
+bits: 7e 00       (011111100000dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 0001 dest  BTSTS dest */
+bits: 7e 10       (011111100001dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 0010 dest  BMcnd dest  */
+bits: 7e 20       (011111100010dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 0011 srcx  BNTST src */
+bits: 7e 30       (011111100011srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 0100 srcx  BAND src */
+bits: 7e 40       (011111100100srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 0101 srcx  BNAND src */
+bits: 7e 50       (011111100101srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 0110 srcx  BOR src */
+bits: 7e 60       (011111100110srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 0111 srcx  BNOR src */
+bits: 7e 70       (011111100111srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 1000 dest  BCLR:G dest */
+bits: 7e 80       (011111101000dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 1001 dest  BSET:G dest */
+bits: 7e 90       (011111101001dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 1010 dest  BNOT:G dest */
+bits: 7e a0       (011111101010dest) 2 bytes
+
+mask: ff f0       /** 0111 1110 1011 srcx  BTST:G src */
+bits: 7e b0       (011111101011srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 1100 srcx  BXOR src */
+bits: 7e c0       (011111101100srcx) 2 bytes
+
+mask: ff f0       /** 0111 1110 1101 srcx  BNXOR src */
+bits: 7e d0       (011111101101srcx) 2 bytes
+
+mask: fe 00       /** 1000 000w srcx dest  TST.size src,dest */
+bits: 80 00       (1000000wsrcxdest) 1 byte
+
+mask: fe 00       /** 1000 100w srcx dest  XOR.size src,dest */
+bits: 88 00       (1000100wsrcxdest) 1 byte
+
+mask: fe 00       /** 1001 000w srcx dest  AND.size:G src.dest */
+bits: 90 00       (1001000wsrcxdest) 1 byte
+
+mask: fe 00       /** 1001 100w srcx dest  OR.size:G src,dest */
+bits: 98 00       (1001100wsrcxdest) 1 byte
+
+mask: fe 00       /** 1010 000w srcx dest  ADD.size:G src,dest */
+bits: a0 00       (1010000wsrcxdest) 1 byte
+
+mask: fe 00       /** 1010 100w srcx dest  SUB.size:G src,dest */
+bits: a8 00       (1010100wsrcxdest) 1 byte
+
+mask: fe 00       /** 1011 000w srcx dest  ADC.size src,dest */
+bits: b0 00       (1011000wsrcxdest) 1 byte
+
+mask: fe 00       /** 1011 100w srcx dest  SBB.size src,dest */
+bits: b8 00       (1011100wsrcxdest) 1 byte
+
+mask: fe 00       /** 1100 000w srcx dest  CMP.size:G src,dest */
+bits: c0 00       (1100000wsrcxdest) 1 byte
+
+mask: fe 00       /** 1100 100w immm dest  ADD.size:Q #IMM,dest */
+bits: c8 00       (1100100wimmmdest) 1 byte
+
+mask: fe 00       /** 1101 000w immm dest  CMP.size:Q #IMM,dest */
+bits: d0 00       (1101000wimmmdest) 1 byte
+
+mask: fe 00       /** 1101 100w immm dest  MOV.size:Q #IMM,dest */
+bits: d8 00       (1101100wimmmdest) 1 byte
+
+mask: fe 00       /** 1110 000w immm dest  ROT.size #IMM,dest */
+bits: e0 00       (1110000wimmmdest) 1 byte
+
+mask: fe 00       /** 1110 100w immm dest  SHL.size #IMM, dest */
+bits: e8 00       (1110100wimmmdest) 1 byte
+
+mask: ff ef       /** 1110 1011 000d 0001  SHL.L R1H,dest */
+bits: eb 01       (11101011000d0001) 2 bytes
+
+mask: ff ef       /** 1110 1011 001d 0001  SHA.L R1H,dest */
+bits: eb 21       (11101011001d0001) 2 bytes
+
+mask: ff 8f       /** 1110 1011 0flg 0100  FSET dest */
+bits: eb 04       (111010110flg0100) 2 bytes
+
+mask: ff 8f       /** 1110 1011 0flg 0101  FCLR dest */
+bits: eb 05       (111010110flg0101) 2 bytes
+
+mask: ff 8f       /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+bits: eb 00       (111010110reg0000) 2 bytes
+
+mask: ff 8f       /** 1110 1011 0reg 0011  POPC dest */
+bits: eb 03       (111010110reg0011) 2 bytes
+
+mask: ff 88       /** 1110 1011 0reg 1src  MOVA src,dest */
+bits: eb 08       (111010110reg1src) 2 bytes
+
+mask: ff 8f       /** 1110 1011 0src 0010  PUSHC src */
+bits: eb 02       (111010110src0010) 2 bytes
+
+mask: ff e0       /** 1110 1011 100d immm  SHL.L #IMM,dest */
+bits: eb 80       (11101011100dimmm) 2 bytes
+
+mask: ff e0       /** 1110 1011 101d immm  SHA.L #IMM, dest */
+bits: eb a0       (11101011101dimmm) 2 bytes
+
+mask: ff c0       /** 1110 1011 11vector   INT #imm */
+bits: eb c0       (1110101111vector) 2 bytes
+
+mask: fe 00       /** 1111 000w immm dest  SHA.size #IMM, dest */
+bits: f0 00       (1111000wimmmdest) 1 byte
+
+mask: fe 00       /** 1111 100w immm dest  ADJNZ.size #IMM,dest,label */
+bits: f8 00       (1111100wimmmdest) 1 byte
+0000 0000 /** 0000 0000            BRK */
+0000 0001 /** 0000 0s ds           MOV.B:S R0L/R0H,dest */
+0000 0010 ''
+0000 0011 ''
+0000 0100 /** 0000 0100            NOP */
+0000 0101 /** 0000 0s ds           MOV.B:S R0L/R0H,dest */
+0000 0110 ''
+0000 0111 ''
+0000 1000 /** 0000 1d sr           MOV.B:S src,R0L/R0H */
+0000 1001 ''
+0000 1010 ''
+0000 1011 ''
+0000 1100 ''
+0000 1101 ''
+0000 1110 ''
+0000 1111 ''
+0001 0000 /** 0001 0d sr           AND.B:S src,R0L/R0H */
+0001 0001 ''
+0001 0010 ''
+0001 0011 ''
+0001 0100 ''
+0001 0101 ''
+0001 0110 ''
+0001 0111 ''
+0001 1000 /** 0001 1d sr           OR.B:S src,R0L/R0H */
+0001 1001 ''
+0001 1010 ''
+0001 1011 ''
+0001 1100 ''
+0001 1101 ''
+0001 1110 ''
+0001 1111 ''
+0010 0000 /** 0010 0d sr           ADD.B:S src,R0L/R0H */
+0010 0001 ''
+0010 0010 ''
+0010 0011 ''
+0010 0100 ''
+0010 0101 ''
+0010 0110 ''
+0010 0111 ''
+0010 1000 /** 0010 1d sr           SUB.B:S src,R0L/R0H */
+0010 1001 ''
+0010 1010 ''
+0010 1011 ''
+0010 1100 ''
+0010 1101 ''
+0010 1110 ''
+0010 1111 ''
+0011 0000 /** 0011 0d sr           MOV.B:S src,dest */
+0011 0001 ''
+0011 0010 ''
+0011 0011 ''
+0011 0100 ''
+0011 0101 ''
+0011 0110 ''
+0011 0111 ''
+0011 1000 /** 0011 1d sr           CMP.B:S src,R0L/R0H */
+0011 1001 ''
+0011 1010 ''
+0011 1011 ''
+0011 1100 ''
+0011 1101 ''
+0011 1110 ''
+0011 1111 ''
+0100 0000 /** 0100 0bit            BCLR:S bit,base:11[SB] */
+0100 0001 ''
+0100 0010 ''
+0100 0011 ''
+0100 0100 ''
+0100 0101 ''
+0100 0110 ''
+0100 0111 ''
+0100 1000 /** 0100 1bit            BSET:S bit,base:11[SB] */
+0100 1001 ''
+0100 1010 ''
+0100 1011 ''
+0100 1100 ''
+0100 1101 ''
+0100 1110 ''
+0100 1111 ''
+0101 0000 /** 0101 0bit            BNOT:S bit,base:11[SB] */
+0101 0001 ''
+0101 0010 ''
+0101 0011 ''
+0101 0100 ''
+0101 0101 ''
+0101 0110 ''
+0101 0111 ''
+0101 1000 /** 0101 1bit            BTST:S bit,base:11[SB] */
+0101 1001 ''
+0101 1010 ''
+0101 1011 ''
+0101 1100 ''
+0101 1101 ''
+0101 1110 ''
+0101 1111 ''
+0110 0000 /** 0110 0dsp            JMP.S label */
+0110 0001 ''
+0110 0010 ''
+0110 0011 ''
+0110 0100 ''
+0110 0101 ''
+0110 0110 ''
+0110 0111 ''
+0110 1000 /** 0110 1cnd            Jcnd label */
+0110 1001 ''
+0110 1010 ''
+0110 1011 ''
+0110 1100 ''
+0110 1101 ''
+0110 1110 ''
+0110 1111 ''
+0111 0000 /** 0111 000w srcx dest  MULU.size src,dest */
+0111 0001 ''
+0111 0010 /** 0111 001w srcx dest  MOV.size:G src,dest */
+0111 0011 ''
+0111 0100 indirect
+0111 0100 0000 0000 /** 0111 010w 0000 srcx  STE.size src,abs20 */
+0111 0100 0000 0001 ''
+0111 0100 0000 0010 ''
+0111 0100 0000 0011 ''
+0111 0100 0000 0100 ''
+0111 0100 0000 0101 ''
+0111 0100 0000 0110 ''
+0111 0100 0000 0111 ''
+0111 0100 0000 1000 ''
+0111 0100 0000 1001 ''
+0111 0100 0000 1010 ''
+0111 0100 0000 1011 ''
+0111 0100 0000 1100 ''
+0111 0100 0000 1101 ''
+0111 0100 0000 1110 ''
+0111 0100 0000 1111 ''
+0111 0100 0001 0000 /** 0111 010w 0001 srcx  STE.size src,disp20[a0] */
+0111 0100 0001 0001 ''
+0111 0100 0001 0010 ''
+0111 0100 0001 0011 ''
+0111 0100 0001 0100 ''
+0111 0100 0001 0101 ''
+0111 0100 0001 0110 ''
+0111 0100 0001 0111 ''
+0111 0100 0001 1000 ''
+0111 0100 0001 1001 ''
+0111 0100 0001 1010 ''
+0111 0100 0001 1011 ''
+0111 0100 0001 1100 ''
+0111 0100 0001 1101 ''
+0111 0100 0001 1110 ''
+0111 0100 0001 1111 ''
+0111 0100 0010 0000 /** 0111 010w 0010 srcx  STE.size src,[a1a0] */
+0111 0100 0010 0001 ''
+0111 0100 0010 0010 ''
+0111 0100 0010 0011 ''
+0111 0100 0010 0100 ''
+0111 0100 0010 0101 ''
+0111 0100 0010 0110 ''
+0111 0100 0010 0111 ''
+0111 0100 0010 1000 ''
+0111 0100 0010 1001 ''
+0111 0100 0010 1010 ''
+0111 0100 0010 1011 ''
+0111 0100 0010 1100 ''
+0111 0100 0010 1101 ''
+0111 0100 0010 1110 ''
+0111 0100 0010 1111 ''
+0111 0100 0011 0000 /** 0111 010w 0011 srcx  MOV.size:G src, disp8[SP] */
+0111 0100 0011 0001 ''
+0111 0100 0011 0010 ''
+0111 0100 0011 0011 ''
+0111 0100 0011 0100 ''
+0111 0100 0011 0101 ''
+0111 0100 0011 0110 ''
+0111 0100 0011 0111 ''
+0111 0100 0011 1000 ''
+0111 0100 0011 1001 ''
+0111 0100 0011 1010 ''
+0111 0100 0011 1011 ''
+0111 0100 0011 1100 ''
+0111 0100 0011 1101 ''
+0111 0100 0011 1110 ''
+0111 0100 0011 1111 ''
+0111 0100 0100 0000 /** 0111 010w 0100 srcx  PUSH.size:G src */
+0111 0100 0100 0001 ''
+0111 0100 0100 0010 ''
+0111 0100 0100 0011 ''
+0111 0100 0100 0100 ''
+0111 0100 0100 0101 ''
+0111 0100 0100 0110 ''
+0111 0100 0100 0111 ''
+0111 0100 0100 1000 ''
+0111 0100 0100 1001 ''
+0111 0100 0100 1010 ''
+0111 0100 0100 1011 ''
+0111 0100 0100 1100 ''
+0111 0100 0100 1101 ''
+0111 0100 0100 1110 ''
+0111 0100 0100 1111 ''
+0111 0100 0101 0000 /** 0111 010w 0101 dest  NEG.size dest */
+0111 0100 0101 0001 ''
+0111 0100 0101 0010 ''
+0111 0100 0101 0011 ''
+0111 0100 0101 0100 ''
+0111 0100 0101 0101 ''
+0111 0100 0101 0110 ''
+0111 0100 0101 0111 ''
+0111 0100 0101 1000 ''
+0111 0100 0101 1001 ''
+0111 0100 0101 1010 ''
+0111 0100 0101 1011 ''
+0111 0100 0101 1100 ''
+0111 0100 0101 1101 ''
+0111 0100 0101 1110 ''
+0111 0100 0101 1111 ''
+0111 0100 0110 0000 /** 0111 010w 0110 dest  ROT.size R1H,dest */
+0111 0100 0110 0001 ''
+0111 0100 0110 0010 ''
+0111 0100 0110 0011 ''
+0111 0100 0110 0100 ''
+0111 0100 0110 0101 ''
+0111 0100 0110 0110 ''
+0111 0100 0110 0111 ''
+0111 0100 0110 1000 ''
+0111 0100 0110 1001 ''
+0111 0100 0110 1010 ''
+0111 0100 0110 1011 ''
+0111 0100 0110 1100 ''
+0111 0100 0110 1101 ''
+0111 0100 0110 1110 ''
+0111 0100 0110 1111 ''
+0111 0100 0111 0000 /** 0111 010w 0111 dest  NOT.size:G */
+0111 0100 0111 0001 ''
+0111 0100 0111 0010 ''
+0111 0100 0111 0011 ''
+0111 0100 0111 0100 ''
+0111 0100 0111 0101 ''
+0111 0100 0111 0110 ''
+0111 0100 0111 0111 ''
+0111 0100 0111 1000 ''
+0111 0100 0111 1001 ''
+0111 0100 0111 1010 ''
+0111 0100 0111 1011 ''
+0111 0100 0111 1100 ''
+0111 0100 0111 1101 ''
+0111 0100 0111 1110 ''
+0111 0100 0111 1111 ''
+0111 0100 1000 0000 /** 0111 010w 1000 dest  LDE.size abs20,dest */
+0111 0100 1000 0001 ''
+0111 0100 1000 0010 ''
+0111 0100 1000 0011 ''
+0111 0100 1000 0100 ''
+0111 0100 1000 0101 ''
+0111 0100 1000 0110 ''
+0111 0100 1000 0111 ''
+0111 0100 1000 1000 ''
+0111 0100 1000 1001 ''
+0111 0100 1000 1010 ''
+0111 0100 1000 1011 ''
+0111 0100 1000 1100 ''
+0111 0100 1000 1101 ''
+0111 0100 1000 1110 ''
+0111 0100 1000 1111 ''
+0111 0100 1001 0000 /** 0111 010w 1001 dest  LDE.size dsp:20[a0], dest */
+0111 0100 1001 0001 ''
+0111 0100 1001 0010 ''
+0111 0100 1001 0011 ''
+0111 0100 1001 0100 ''
+0111 0100 1001 0101 ''
+0111 0100 1001 0110 ''
+0111 0100 1001 0111 ''
+0111 0100 1001 1000 ''
+0111 0100 1001 1001 ''
+0111 0100 1001 1010 ''
+0111 0100 1001 1011 ''
+0111 0100 1001 1100 ''
+0111 0100 1001 1101 ''
+0111 0100 1001 1110 ''
+0111 0100 1001 1111 ''
+0111 0100 1010 0000 /** 0111 010w 1010 dest  LDE.size [a1a0],dest */
+0111 0100 1010 0001 ''
+0111 0100 1010 0010 ''
+0111 0100 1010 0011 ''
+0111 0100 1010 0100 ''
+0111 0100 1010 0101 ''
+0111 0100 1010 0110 ''
+0111 0100 1010 0111 ''
+0111 0100 1010 1000 ''
+0111 0100 1010 1001 ''
+0111 0100 1010 1010 ''
+0111 0100 1010 1011 ''
+0111 0100 1010 1100 ''
+0111 0100 1010 1101 ''
+0111 0100 1010 1110 ''
+0111 0100 1010 1111 ''
+0111 0100 1011 0000 /** 0111 010w 1011 dest  MOV.size:G dsp:8[SP], dest */
+0111 0100 1011 0001 ''
+0111 0100 1011 0010 ''
+0111 0100 1011 0011 ''
+0111 0100 1011 0100 ''
+0111 0100 1011 0101 ''
+0111 0100 1011 0110 ''
+0111 0100 1011 0111 ''
+0111 0100 1011 1000 ''
+0111 0100 1011 1001 ''
+0111 0100 1011 1010 ''
+0111 0100 1011 1011 ''
+0111 0100 1011 1100 ''
+0111 0100 1011 1101 ''
+0111 0100 1011 1110 ''
+0111 0100 1011 1111 ''
+0111 0100 1100 0000 /** 0111 010w 1100 dest  MOV.size:G #IMM,dest */
+0111 0100 1100 0001 ''
+0111 0100 1100 0010 ''
+0111 0100 1100 0011 ''
+0111 0100 1100 0100 ''
+0111 0100 1100 0101 ''
+0111 0100 1100 0110 ''
+0111 0100 1100 0111 ''
+0111 0100 1100 1000 ''
+0111 0100 1100 1001 ''
+0111 0100 1100 1010 ''
+0111 0100 1100 1011 ''
+0111 0100 1100 1100 ''
+0111 0100 1100 1101 ''
+0111 0100 1100 1110 ''
+0111 0100 1100 1111 ''
+0111 0100 1101 0000 /** 0111 010w 1101 dest  POP.size:G dest */
+0111 0100 1101 0001 ''
+0111 0100 1101 0010 ''
+0111 0100 1101 0011 ''
+0111 0100 1101 0100 ''
+0111 0100 1101 0101 ''
+0111 0100 1101 0110 ''
+0111 0100 1101 0111 ''
+0111 0100 1101 1000 ''
+0111 0100 1101 1001 ''
+0111 0100 1101 1010 ''
+0111 0100 1101 1011 ''
+0111 0100 1101 1100 ''
+0111 0100 1101 1101 ''
+0111 0100 1101 1110 ''
+0111 0100 1101 1111 ''
+0111 0100 1110 0000 /** 0111 010w 1110 dest  SHL.size R1H,dest */
+0111 0100 1110 0001 ''
+0111 0100 1110 0010 ''
+0111 0100 1110 0011 ''
+0111 0100 1110 0100 ''
+0111 0100 1110 0101 ''
+0111 0100 1110 0110 ''
+0111 0100 1110 0111 ''
+0111 0100 1110 1000 ''
+0111 0100 1110 1001 ''
+0111 0100 1110 1010 ''
+0111 0100 1110 1011 ''
+0111 0100 1110 1100 ''
+0111 0100 1110 1101 ''
+0111 0100 1110 1110 ''
+0111 0100 1110 1111 ''
+0111 0100 1111 0000 /** 0111 010w 1111 dest  SHA.size R1H,dest */
+0111 0100 1111 0001 ''
+0111 0100 1111 0010 ''
+0111 0100 1111 0011 ''
+0111 0100 1111 0100 ''
+0111 0100 1111 0101 ''
+0111 0100 1111 0110 ''
+0111 0100 1111 0111 ''
+0111 0100 1111 1000 ''
+0111 0100 1111 1001 ''
+0111 0100 1111 1010 ''
+0111 0100 1111 1011 ''
+0111 0100 1111 1100 ''
+0111 0100 1111 1101 ''
+0111 0100 1111 1110 ''
+0111 0100 1111 1111 ''
+0111 0101 indirect
+0111 0101 0000 0000 /** 0111 010w 0000 srcx  STE.size src,abs20 */
+0111 0101 0000 0001 ''
+0111 0101 0000 0010 ''
+0111 0101 0000 0011 ''
+0111 0101 0000 0100 ''
+0111 0101 0000 0101 ''
+0111 0101 0000 0110 ''
+0111 0101 0000 0111 ''
+0111 0101 0000 1000 ''
+0111 0101 0000 1001 ''
+0111 0101 0000 1010 ''
+0111 0101 0000 1011 ''
+0111 0101 0000 1100 ''
+0111 0101 0000 1101 ''
+0111 0101 0000 1110 ''
+0111 0101 0000 1111 ''
+0111 0101 0001 0000 /** 0111 010w 0001 srcx  STE.size src,disp20[a0] */
+0111 0101 0001 0001 ''
+0111 0101 0001 0010 ''
+0111 0101 0001 0011 ''
+0111 0101 0001 0100 ''
+0111 0101 0001 0101 ''
+0111 0101 0001 0110 ''
+0111 0101 0001 0111 ''
+0111 0101 0001 1000 ''
+0111 0101 0001 1001 ''
+0111 0101 0001 1010 ''
+0111 0101 0001 1011 ''
+0111 0101 0001 1100 ''
+0111 0101 0001 1101 ''
+0111 0101 0001 1110 ''
+0111 0101 0001 1111 ''
+0111 0101 0010 0000 /** 0111 010w 0010 srcx  STE.size src,[a1a0] */
+0111 0101 0010 0001 ''
+0111 0101 0010 0010 ''
+0111 0101 0010 0011 ''
+0111 0101 0010 0100 ''
+0111 0101 0010 0101 ''
+0111 0101 0010 0110 ''
+0111 0101 0010 0111 ''
+0111 0101 0010 1000 ''
+0111 0101 0010 1001 ''
+0111 0101 0010 1010 ''
+0111 0101 0010 1011 ''
+0111 0101 0010 1100 ''
+0111 0101 0010 1101 ''
+0111 0101 0010 1110 ''
+0111 0101 0010 1111 ''
+0111 0101 0011 0000 /** 0111 010w 0011 srcx  MOV.size:G src, disp8[SP] */
+0111 0101 0011 0001 ''
+0111 0101 0011 0010 ''
+0111 0101 0011 0011 ''
+0111 0101 0011 0100 ''
+0111 0101 0011 0101 ''
+0111 0101 0011 0110 ''
+0111 0101 0011 0111 ''
+0111 0101 0011 1000 ''
+0111 0101 0011 1001 ''
+0111 0101 0011 1010 ''
+0111 0101 0011 1011 ''
+0111 0101 0011 1100 ''
+0111 0101 0011 1101 ''
+0111 0101 0011 1110 ''
+0111 0101 0011 1111 ''
+0111 0101 0100 0000 /** 0111 010w 0100 srcx  PUSH.size:G src */
+0111 0101 0100 0001 ''
+0111 0101 0100 0010 ''
+0111 0101 0100 0011 ''
+0111 0101 0100 0100 ''
+0111 0101 0100 0101 ''
+0111 0101 0100 0110 ''
+0111 0101 0100 0111 ''
+0111 0101 0100 1000 ''
+0111 0101 0100 1001 ''
+0111 0101 0100 1010 ''
+0111 0101 0100 1011 ''
+0111 0101 0100 1100 ''
+0111 0101 0100 1101 ''
+0111 0101 0100 1110 ''
+0111 0101 0100 1111 ''
+0111 0101 0101 0000 /** 0111 010w 0101 dest  NEG.size dest */
+0111 0101 0101 0001 ''
+0111 0101 0101 0010 ''
+0111 0101 0101 0011 ''
+0111 0101 0101 0100 ''
+0111 0101 0101 0101 ''
+0111 0101 0101 0110 ''
+0111 0101 0101 0111 ''
+0111 0101 0101 1000 ''
+0111 0101 0101 1001 ''
+0111 0101 0101 1010 ''
+0111 0101 0101 1011 ''
+0111 0101 0101 1100 ''
+0111 0101 0101 1101 ''
+0111 0101 0101 1110 ''
+0111 0101 0101 1111 ''
+0111 0101 0110 0000 /** 0111 010w 0110 dest  ROT.size R1H,dest */
+0111 0101 0110 0001 ''
+0111 0101 0110 0010 ''
+0111 0101 0110 0011 ''
+0111 0101 0110 0100 ''
+0111 0101 0110 0101 ''
+0111 0101 0110 0110 ''
+0111 0101 0110 0111 ''
+0111 0101 0110 1000 ''
+0111 0101 0110 1001 ''
+0111 0101 0110 1010 ''
+0111 0101 0110 1011 ''
+0111 0101 0110 1100 ''
+0111 0101 0110 1101 ''
+0111 0101 0110 1110 ''
+0111 0101 0110 1111 ''
+0111 0101 0111 0000 /** 0111 010w 0111 dest  NOT.size:G */
+0111 0101 0111 0001 ''
+0111 0101 0111 0010 ''
+0111 0101 0111 0011 ''
+0111 0101 0111 0100 ''
+0111 0101 0111 0101 ''
+0111 0101 0111 0110 ''
+0111 0101 0111 0111 ''
+0111 0101 0111 1000 ''
+0111 0101 0111 1001 ''
+0111 0101 0111 1010 ''
+0111 0101 0111 1011 ''
+0111 0101 0111 1100 ''
+0111 0101 0111 1101 ''
+0111 0101 0111 1110 ''
+0111 0101 0111 1111 ''
+0111 0101 1000 0000 /** 0111 010w 1000 dest  LDE.size abs20,dest */
+0111 0101 1000 0001 ''
+0111 0101 1000 0010 ''
+0111 0101 1000 0011 ''
+0111 0101 1000 0100 ''
+0111 0101 1000 0101 ''
+0111 0101 1000 0110 ''
+0111 0101 1000 0111 ''
+0111 0101 1000 1000 ''
+0111 0101 1000 1001 ''
+0111 0101 1000 1010 ''
+0111 0101 1000 1011 ''
+0111 0101 1000 1100 ''
+0111 0101 1000 1101 ''
+0111 0101 1000 1110 ''
+0111 0101 1000 1111 ''
+0111 0101 1001 0000 /** 0111 010w 1001 dest  LDE.size dsp:20[a0], dest */
+0111 0101 1001 0001 ''
+0111 0101 1001 0010 ''
+0111 0101 1001 0011 ''
+0111 0101 1001 0100 ''
+0111 0101 1001 0101 ''
+0111 0101 1001 0110 ''
+0111 0101 1001 0111 ''
+0111 0101 1001 1000 ''
+0111 0101 1001 1001 ''
+0111 0101 1001 1010 ''
+0111 0101 1001 1011 ''
+0111 0101 1001 1100 ''
+0111 0101 1001 1101 ''
+0111 0101 1001 1110 ''
+0111 0101 1001 1111 ''
+0111 0101 1010 0000 /** 0111 010w 1010 dest  LDE.size [a1a0],dest */
+0111 0101 1010 0001 ''
+0111 0101 1010 0010 ''
+0111 0101 1010 0011 ''
+0111 0101 1010 0100 ''
+0111 0101 1010 0101 ''
+0111 0101 1010 0110 ''
+0111 0101 1010 0111 ''
+0111 0101 1010 1000 ''
+0111 0101 1010 1001 ''
+0111 0101 1010 1010 ''
+0111 0101 1010 1011 ''
+0111 0101 1010 1100 ''
+0111 0101 1010 1101 ''
+0111 0101 1010 1110 ''
+0111 0101 1010 1111 ''
+0111 0101 1011 0000 /** 0111 010w 1011 dest  MOV.size:G dsp:8[SP], dest */
+0111 0101 1011 0001 ''
+0111 0101 1011 0010 ''
+0111 0101 1011 0011 ''
+0111 0101 1011 0100 ''
+0111 0101 1011 0101 ''
+0111 0101 1011 0110 ''
+0111 0101 1011 0111 ''
+0111 0101 1011 1000 ''
+0111 0101 1011 1001 ''
+0111 0101 1011 1010 ''
+0111 0101 1011 1011 ''
+0111 0101 1011 1100 ''
+0111 0101 1011 1101 ''
+0111 0101 1011 1110 ''
+0111 0101 1011 1111 ''
+0111 0101 1100 0000 /** 0111 010w 1100 dest  MOV.size:G #IMM,dest */
+0111 0101 1100 0001 ''
+0111 0101 1100 0010 ''
+0111 0101 1100 0011 ''
+0111 0101 1100 0100 ''
+0111 0101 1100 0101 ''
+0111 0101 1100 0110 ''
+0111 0101 1100 0111 ''
+0111 0101 1100 1000 ''
+0111 0101 1100 1001 ''
+0111 0101 1100 1010 ''
+0111 0101 1100 1011 ''
+0111 0101 1100 1100 ''
+0111 0101 1100 1101 ''
+0111 0101 1100 1110 ''
+0111 0101 1100 1111 ''
+0111 0101 1101 0000 /** 0111 010w 1101 dest  POP.size:G dest */
+0111 0101 1101 0001 ''
+0111 0101 1101 0010 ''
+0111 0101 1101 0011 ''
+0111 0101 1101 0100 ''
+0111 0101 1101 0101 ''
+0111 0101 1101 0110 ''
+0111 0101 1101 0111 ''
+0111 0101 1101 1000 ''
+0111 0101 1101 1001 ''
+0111 0101 1101 1010 ''
+0111 0101 1101 1011 ''
+0111 0101 1101 1100 ''
+0111 0101 1101 1101 ''
+0111 0101 1101 1110 ''
+0111 0101 1101 1111 ''
+0111 0101 1110 0000 /** 0111 010w 1110 dest  SHL.size R1H,dest */
+0111 0101 1110 0001 ''
+0111 0101 1110 0010 ''
+0111 0101 1110 0011 ''
+0111 0101 1110 0100 ''
+0111 0101 1110 0101 ''
+0111 0101 1110 0110 ''
+0111 0101 1110 0111 ''
+0111 0101 1110 1000 ''
+0111 0101 1110 1001 ''
+0111 0101 1110 1010 ''
+0111 0101 1110 1011 ''
+0111 0101 1110 1100 ''
+0111 0101 1110 1101 ''
+0111 0101 1110 1110 ''
+0111 0101 1110 1111 ''
+0111 0101 1111 0000 /** 0111 010w 1111 dest  SHA.size R1H,dest */
+0111 0101 1111 0001 ''
+0111 0101 1111 0010 ''
+0111 0101 1111 0011 ''
+0111 0101 1111 0100 ''
+0111 0101 1111 0101 ''
+0111 0101 1111 0110 ''
+0111 0101 1111 0111 ''
+0111 0101 1111 1000 ''
+0111 0101 1111 1001 ''
+0111 0101 1111 1010 ''
+0111 0101 1111 1011 ''
+0111 0101 1111 1100 ''
+0111 0101 1111 1101 ''
+0111 0101 1111 1110 ''
+0111 0101 1111 1111 ''
+0111 0110 indirect
+0111 0110 0000 0000 /** 0111 011w 0000 dest  TST.size #IMM, dest */
+0111 0110 0000 0001 ''
+0111 0110 0000 0010 ''
+0111 0110 0000 0011 ''
+0111 0110 0000 0100 ''
+0111 0110 0000 0101 ''
+0111 0110 0000 0110 ''
+0111 0110 0000 0111 ''
+0111 0110 0000 1000 ''
+0111 0110 0000 1001 ''
+0111 0110 0000 1010 ''
+0111 0110 0000 1011 ''
+0111 0110 0000 1100 ''
+0111 0110 0000 1101 ''
+0111 0110 0000 1110 ''
+0111 0110 0000 1111 ''
+0111 0110 0001 0000 /** 0111 011w 0001 dest  XOR.size #IMM,dest */
+0111 0110 0001 0001 ''
+0111 0110 0001 0010 ''
+0111 0110 0001 0011 ''
+0111 0110 0001 0100 ''
+0111 0110 0001 0101 ''
+0111 0110 0001 0110 ''
+0111 0110 0001 0111 ''
+0111 0110 0001 1000 ''
+0111 0110 0001 1001 ''
+0111 0110 0001 1010 ''
+0111 0110 0001 1011 ''
+0111 0110 0001 1100 ''
+0111 0110 0001 1101 ''
+0111 0110 0001 1110 ''
+0111 0110 0001 1111 ''
+0111 0110 0010 0000 /** 0111 011w 0010 dest  AND.size:G #IMM,dest */
+0111 0110 0010 0001 ''
+0111 0110 0010 0010 ''
+0111 0110 0010 0011 ''
+0111 0110 0010 0100 ''
+0111 0110 0010 0101 ''
+0111 0110 0010 0110 ''
+0111 0110 0010 0111 ''
+0111 0110 0010 1000 ''
+0111 0110 0010 1001 ''
+0111 0110 0010 1010 ''
+0111 0110 0010 1011 ''
+0111 0110 0010 1100 ''
+0111 0110 0010 1101 ''
+0111 0110 0010 1110 ''
+0111 0110 0010 1111 ''
+0111 0110 0011 0000 /** 0111 011w 0011 dest  OR.size:G #IMM,dest */
+0111 0110 0011 0001 ''
+0111 0110 0011 0010 ''
+0111 0110 0011 0011 ''
+0111 0110 0011 0100 ''
+0111 0110 0011 0101 ''
+0111 0110 0011 0110 ''
+0111 0110 0011 0111 ''
+0111 0110 0011 1000 ''
+0111 0110 0011 1001 ''
+0111 0110 0011 1010 ''
+0111 0110 0011 1011 ''
+0111 0110 0011 1100 ''
+0111 0110 0011 1101 ''
+0111 0110 0011 1110 ''
+0111 0110 0011 1111 ''
+0111 0110 0100 0000 /** 0111 011w 0100 dest  ADD.size:G #imm,dest */
+0111 0110 0100 0001 ''
+0111 0110 0100 0010 ''
+0111 0110 0100 0011 ''
+0111 0110 0100 0100 ''
+0111 0110 0100 0101 ''
+0111 0110 0100 0110 ''
+0111 0110 0100 0111 ''
+0111 0110 0100 1000 ''
+0111 0110 0100 1001 ''
+0111 0110 0100 1010 ''
+0111 0110 0100 1011 ''
+0111 0110 0100 1100 ''
+0111 0110 0100 1101 ''
+0111 0110 0100 1110 ''
+0111 0110 0100 1111 ''
+0111 0110 0101 0000 /** 0111 011w 0101 dest  SUB.size:G #IMM,dest */
+0111 0110 0101 0001 ''
+0111 0110 0101 0010 ''
+0111 0110 0101 0011 ''
+0111 0110 0101 0100 ''
+0111 0110 0101 0101 ''
+0111 0110 0101 0110 ''
+0111 0110 0101 0111 ''
+0111 0110 0101 1000 ''
+0111 0110 0101 1001 ''
+0111 0110 0101 1010 ''
+0111 0110 0101 1011 ''
+0111 0110 0101 1100 ''
+0111 0110 0101 1101 ''
+0111 0110 0101 1110 ''
+0111 0110 0101 1111 ''
+0111 0110 0110 0000 /** 0111 011w 0110 dest  ADC.size #IMM,dest */
+0111 0110 0110 0001 ''
+0111 0110 0110 0010 ''
+0111 0110 0110 0011 ''
+0111 0110 0110 0100 ''
+0111 0110 0110 0101 ''
+0111 0110 0110 0110 ''
+0111 0110 0110 0111 ''
+0111 0110 0110 1000 ''
+0111 0110 0110 1001 ''
+0111 0110 0110 1010 ''
+0111 0110 0110 1011 ''
+0111 0110 0110 1100 ''
+0111 0110 0110 1101 ''
+0111 0110 0110 1110 ''
+0111 0110 0110 1111 ''
+0111 0110 0111 0000 /** 0111 011w 0111 dest  SBB.size #IMM,dest */
+0111 0110 0111 0001 ''
+0111 0110 0111 0010 ''
+0111 0110 0111 0011 ''
+0111 0110 0111 0100 ''
+0111 0110 0111 0101 ''
+0111 0110 0111 0110 ''
+0111 0110 0111 0111 ''
+0111 0110 0111 1000 ''
+0111 0110 0111 1001 ''
+0111 0110 0111 1010 ''
+0111 0110 0111 1011 ''
+0111 0110 0111 1100 ''
+0111 0110 0111 1101 ''
+0111 0110 0111 1110 ''
+0111 0110 0111 1111 ''
+0111 0110 1000 0000 /** 0111 011w 1000 dest  CMP.size:G #IMM,dest */
+0111 0110 1000 0001 ''
+0111 0110 1000 0010 ''
+0111 0110 1000 0011 ''
+0111 0110 1000 0100 ''
+0111 0110 1000 0101 ''
+0111 0110 1000 0110 ''
+0111 0110 1000 0111 ''
+0111 0110 1000 1000 ''
+0111 0110 1000 1001 ''
+0111 0110 1000 1010 ''
+0111 0110 1000 1011 ''
+0111 0110 1000 1100 ''
+0111 0110 1000 1101 ''
+0111 0110 1000 1110 ''
+0111 0110 1000 1111 ''
+0111 0110 1001 0000 /** 0111 011w 1001 srcx  DIVX.size src */
+0111 0110 1001 0001 ''
+0111 0110 1001 0010 ''
+0111 0110 1001 0011 ''
+0111 0110 1001 0100 ''
+0111 0110 1001 0101 ''
+0111 0110 1001 0110 ''
+0111 0110 1001 0111 ''
+0111 0110 1001 1000 ''
+0111 0110 1001 1001 ''
+0111 0110 1001 1010 ''
+0111 0110 1001 1011 ''
+0111 0110 1001 1100 ''
+0111 0110 1001 1101 ''
+0111 0110 1001 1110 ''
+0111 0110 1001 1111 ''
+0111 0110 1010 0000 /** 0111 011w 1010 dest  ROLC.size dest */
+0111 0110 1010 0001 ''
+0111 0110 1010 0010 ''
+0111 0110 1010 0011 ''
+0111 0110 1010 0100 ''
+0111 0110 1010 0101 ''
+0111 0110 1010 0110 ''
+0111 0110 1010 0111 ''
+0111 0110 1010 1000 ''
+0111 0110 1010 1001 ''
+0111 0110 1010 1010 ''
+0111 0110 1010 1011 ''
+0111 0110 1010 1100 ''
+0111 0110 1010 1101 ''
+0111 0110 1010 1110 ''
+0111 0110 1010 1111 ''
+0111 0110 1011 0000 /** 0111 011w 1011 dest  RORC.size dest */
+0111 0110 1011 0001 ''
+0111 0110 1011 0010 ''
+0111 0110 1011 0011 ''
+0111 0110 1011 0100 ''
+0111 0110 1011 0101 ''
+0111 0110 1011 0110 ''
+0111 0110 1011 0111 ''
+0111 0110 1011 1000 ''
+0111 0110 1011 1001 ''
+0111 0110 1011 1010 ''
+0111 0110 1011 1011 ''
+0111 0110 1011 1100 ''
+0111 0110 1011 1101 ''
+0111 0110 1011 1110 ''
+0111 0110 1011 1111 ''
+0111 0110 1100 0000 /** 0111 011w 1100 srcx  DIVU.size src */
+0111 0110 1100 0001 ''
+0111 0110 1100 0010 ''
+0111 0110 1100 0011 ''
+0111 0110 1100 0100 ''
+0111 0110 1100 0101 ''
+0111 0110 1100 0110 ''
+0111 0110 1100 0111 ''
+0111 0110 1100 1000 ''
+0111 0110 1100 1001 ''
+0111 0110 1100 1010 ''
+0111 0110 1100 1011 ''
+0111 0110 1100 1100 ''
+0111 0110 1100 1101 ''
+0111 0110 1100 1110 ''
+0111 0110 1100 1111 ''
+0111 0110 1101 0000 /** 0111 011w 1101 srcx  DIV.size src */
+0111 0110 1101 0001 ''
+0111 0110 1101 0010 ''
+0111 0110 1101 0011 ''
+0111 0110 1101 0100 ''
+0111 0110 1101 0101 ''
+0111 0110 1101 0110 ''
+0111 0110 1101 0111 ''
+0111 0110 1101 1000 ''
+0111 0110 1101 1001 ''
+0111 0110 1101 1010 ''
+0111 0110 1101 1011 ''
+0111 0110 1101 1100 ''
+0111 0110 1101 1101 ''
+0111 0110 1101 1110 ''
+0111 0110 1101 1111 ''
+0111 0110 1110 0000 /** 0111 011w 1110 dest  ADCF.size dest */
+0111 0110 1110 0001 ''
+0111 0110 1110 0010 ''
+0111 0110 1110 0011 ''
+0111 0110 1110 0100 ''
+0111 0110 1110 0101 ''
+0111 0110 1110 0110 ''
+0111 0110 1110 0111 ''
+0111 0110 1110 1000 ''
+0111 0110 1110 1001 ''
+0111 0110 1110 1010 ''
+0111 0110 1110 1011 ''
+0111 0110 1110 1100 ''
+0111 0110 1110 1101 ''
+0111 0110 1110 1110 ''
+0111 0110 1110 1111 ''
+0111 0110 1111 0000 /** 0111 011w 1111 dest  ABS.size dest */
+0111 0110 1111 0001 ''
+0111 0110 1111 0010 ''
+0111 0110 1111 0011 ''
+0111 0110 1111 0100 ''
+0111 0110 1111 0101 ''
+0111 0110 1111 0110 ''
+0111 0110 1111 0111 ''
+0111 0110 1111 1000 ''
+0111 0110 1111 1001 ''
+0111 0110 1111 1010 ''
+0111 0110 1111 1011 ''
+0111 0110 1111 1100 ''
+0111 0110 1111 1101 ''
+0111 0110 1111 1110 ''
+0111 0110 1111 1111 ''
+0111 0111 indirect
+0111 0111 0000 0000 /** 0111 011w 0000 dest  TST.size #IMM, dest */
+0111 0111 0000 0001 ''
+0111 0111 0000 0010 ''
+0111 0111 0000 0011 ''
+0111 0111 0000 0100 ''
+0111 0111 0000 0101 ''
+0111 0111 0000 0110 ''
+0111 0111 0000 0111 ''
+0111 0111 0000 1000 ''
+0111 0111 0000 1001 ''
+0111 0111 0000 1010 ''
+0111 0111 0000 1011 ''
+0111 0111 0000 1100 ''
+0111 0111 0000 1101 ''
+0111 0111 0000 1110 ''
+0111 0111 0000 1111 ''
+0111 0111 0001 0000 /** 0111 011w 0001 dest  XOR.size #IMM,dest */
+0111 0111 0001 0001 ''
+0111 0111 0001 0010 ''
+0111 0111 0001 0011 ''
+0111 0111 0001 0100 ''
+0111 0111 0001 0101 ''
+0111 0111 0001 0110 ''
+0111 0111 0001 0111 ''
+0111 0111 0001 1000 ''
+0111 0111 0001 1001 ''
+0111 0111 0001 1010 ''
+0111 0111 0001 1011 ''
+0111 0111 0001 1100 ''
+0111 0111 0001 1101 ''
+0111 0111 0001 1110 ''
+0111 0111 0001 1111 ''
+0111 0111 0010 0000 /** 0111 011w 0010 dest  AND.size:G #IMM,dest */
+0111 0111 0010 0001 ''
+0111 0111 0010 0010 ''
+0111 0111 0010 0011 ''
+0111 0111 0010 0100 ''
+0111 0111 0010 0101 ''
+0111 0111 0010 0110 ''
+0111 0111 0010 0111 ''
+0111 0111 0010 1000 ''
+0111 0111 0010 1001 ''
+0111 0111 0010 1010 ''
+0111 0111 0010 1011 ''
+0111 0111 0010 1100 ''
+0111 0111 0010 1101 ''
+0111 0111 0010 1110 ''
+0111 0111 0010 1111 ''
+0111 0111 0011 0000 /** 0111 011w 0011 dest  OR.size:G #IMM,dest */
+0111 0111 0011 0001 ''
+0111 0111 0011 0010 ''
+0111 0111 0011 0011 ''
+0111 0111 0011 0100 ''
+0111 0111 0011 0101 ''
+0111 0111 0011 0110 ''
+0111 0111 0011 0111 ''
+0111 0111 0011 1000 ''
+0111 0111 0011 1001 ''
+0111 0111 0011 1010 ''
+0111 0111 0011 1011 ''
+0111 0111 0011 1100 ''
+0111 0111 0011 1101 ''
+0111 0111 0011 1110 ''
+0111 0111 0011 1111 ''
+0111 0111 0100 0000 /** 0111 011w 0100 dest  ADD.size:G #imm,dest */
+0111 0111 0100 0001 ''
+0111 0111 0100 0010 ''
+0111 0111 0100 0011 ''
+0111 0111 0100 0100 ''
+0111 0111 0100 0101 ''
+0111 0111 0100 0110 ''
+0111 0111 0100 0111 ''
+0111 0111 0100 1000 ''
+0111 0111 0100 1001 ''
+0111 0111 0100 1010 ''
+0111 0111 0100 1011 ''
+0111 0111 0100 1100 ''
+0111 0111 0100 1101 ''
+0111 0111 0100 1110 ''
+0111 0111 0100 1111 ''
+0111 0111 0101 0000 /** 0111 011w 0101 dest  SUB.size:G #IMM,dest */
+0111 0111 0101 0001 ''
+0111 0111 0101 0010 ''
+0111 0111 0101 0011 ''
+0111 0111 0101 0100 ''
+0111 0111 0101 0101 ''
+0111 0111 0101 0110 ''
+0111 0111 0101 0111 ''
+0111 0111 0101 1000 ''
+0111 0111 0101 1001 ''
+0111 0111 0101 1010 ''
+0111 0111 0101 1011 ''
+0111 0111 0101 1100 ''
+0111 0111 0101 1101 ''
+0111 0111 0101 1110 ''
+0111 0111 0101 1111 ''
+0111 0111 0110 0000 /** 0111 011w 0110 dest  ADC.size #IMM,dest */
+0111 0111 0110 0001 ''
+0111 0111 0110 0010 ''
+0111 0111 0110 0011 ''
+0111 0111 0110 0100 ''
+0111 0111 0110 0101 ''
+0111 0111 0110 0110 ''
+0111 0111 0110 0111 ''
+0111 0111 0110 1000 ''
+0111 0111 0110 1001 ''
+0111 0111 0110 1010 ''
+0111 0111 0110 1011 ''
+0111 0111 0110 1100 ''
+0111 0111 0110 1101 ''
+0111 0111 0110 1110 ''
+0111 0111 0110 1111 ''
+0111 0111 0111 0000 /** 0111 011w 0111 dest  SBB.size #IMM,dest */
+0111 0111 0111 0001 ''
+0111 0111 0111 0010 ''
+0111 0111 0111 0011 ''
+0111 0111 0111 0100 ''
+0111 0111 0111 0101 ''
+0111 0111 0111 0110 ''
+0111 0111 0111 0111 ''
+0111 0111 0111 1000 ''
+0111 0111 0111 1001 ''
+0111 0111 0111 1010 ''
+0111 0111 0111 1011 ''
+0111 0111 0111 1100 ''
+0111 0111 0111 1101 ''
+0111 0111 0111 1110 ''
+0111 0111 0111 1111 ''
+0111 0111 1000 0000 /** 0111 011w 1000 dest  CMP.size:G #IMM,dest */
+0111 0111 1000 0001 ''
+0111 0111 1000 0010 ''
+0111 0111 1000 0011 ''
+0111 0111 1000 0100 ''
+0111 0111 1000 0101 ''
+0111 0111 1000 0110 ''
+0111 0111 1000 0111 ''
+0111 0111 1000 1000 ''
+0111 0111 1000 1001 ''
+0111 0111 1000 1010 ''
+0111 0111 1000 1011 ''
+0111 0111 1000 1100 ''
+0111 0111 1000 1101 ''
+0111 0111 1000 1110 ''
+0111 0111 1000 1111 ''
+0111 0111 1001 0000 /** 0111 011w 1001 srcx  DIVX.size src */
+0111 0111 1001 0001 ''
+0111 0111 1001 0010 ''
+0111 0111 1001 0011 ''
+0111 0111 1001 0100 ''
+0111 0111 1001 0101 ''
+0111 0111 1001 0110 ''
+0111 0111 1001 0111 ''
+0111 0111 1001 1000 ''
+0111 0111 1001 1001 ''
+0111 0111 1001 1010 ''
+0111 0111 1001 1011 ''
+0111 0111 1001 1100 ''
+0111 0111 1001 1101 ''
+0111 0111 1001 1110 ''
+0111 0111 1001 1111 ''
+0111 0111 1010 0000 /** 0111 011w 1010 dest  ROLC.size dest */
+0111 0111 1010 0001 ''
+0111 0111 1010 0010 ''
+0111 0111 1010 0011 ''
+0111 0111 1010 0100 ''
+0111 0111 1010 0101 ''
+0111 0111 1010 0110 ''
+0111 0111 1010 0111 ''
+0111 0111 1010 1000 ''
+0111 0111 1010 1001 ''
+0111 0111 1010 1010 ''
+0111 0111 1010 1011 ''
+0111 0111 1010 1100 ''
+0111 0111 1010 1101 ''
+0111 0111 1010 1110 ''
+0111 0111 1010 1111 ''
+0111 0111 1011 0000 /** 0111 011w 1011 dest  RORC.size dest */
+0111 0111 1011 0001 ''
+0111 0111 1011 0010 ''
+0111 0111 1011 0011 ''
+0111 0111 1011 0100 ''
+0111 0111 1011 0101 ''
+0111 0111 1011 0110 ''
+0111 0111 1011 0111 ''
+0111 0111 1011 1000 ''
+0111 0111 1011 1001 ''
+0111 0111 1011 1010 ''
+0111 0111 1011 1011 ''
+0111 0111 1011 1100 ''
+0111 0111 1011 1101 ''
+0111 0111 1011 1110 ''
+0111 0111 1011 1111 ''
+0111 0111 1100 0000 /** 0111 011w 1100 srcx  DIVU.size src */
+0111 0111 1100 0001 ''
+0111 0111 1100 0010 ''
+0111 0111 1100 0011 ''
+0111 0111 1100 0100 ''
+0111 0111 1100 0101 ''
+0111 0111 1100 0110 ''
+0111 0111 1100 0111 ''
+0111 0111 1100 1000 ''
+0111 0111 1100 1001 ''
+0111 0111 1100 1010 ''
+0111 0111 1100 1011 ''
+0111 0111 1100 1100 ''
+0111 0111 1100 1101 ''
+0111 0111 1100 1110 ''
+0111 0111 1100 1111 ''
+0111 0111 1101 0000 /** 0111 011w 1101 srcx  DIV.size src */
+0111 0111 1101 0001 ''
+0111 0111 1101 0010 ''
+0111 0111 1101 0011 ''
+0111 0111 1101 0100 ''
+0111 0111 1101 0101 ''
+0111 0111 1101 0110 ''
+0111 0111 1101 0111 ''
+0111 0111 1101 1000 ''
+0111 0111 1101 1001 ''
+0111 0111 1101 1010 ''
+0111 0111 1101 1011 ''
+0111 0111 1101 1100 ''
+0111 0111 1101 1101 ''
+0111 0111 1101 1110 ''
+0111 0111 1101 1111 ''
+0111 0111 1110 0000 /** 0111 011w 1110 dest  ADCF.size dest */
+0111 0111 1110 0001 ''
+0111 0111 1110 0010 ''
+0111 0111 1110 0011 ''
+0111 0111 1110 0100 ''
+0111 0111 1110 0101 ''
+0111 0111 1110 0110 ''
+0111 0111 1110 0111 ''
+0111 0111 1110 1000 ''
+0111 0111 1110 1001 ''
+0111 0111 1110 1010 ''
+0111 0111 1110 1011 ''
+0111 0111 1110 1100 ''
+0111 0111 1110 1101 ''
+0111 0111 1110 1110 ''
+0111 0111 1110 1111 ''
+0111 0111 1111 0000 /** 0111 011w 1111 dest  ABS.size dest */
+0111 0111 1111 0001 ''
+0111 0111 1111 0010 ''
+0111 0111 1111 0011 ''
+0111 0111 1111 0100 ''
+0111 0111 1111 0101 ''
+0111 0111 1111 0110 ''
+0111 0111 1111 0111 ''
+0111 0111 1111 1000 ''
+0111 0111 1111 1001 ''
+0111 0111 1111 1010 ''
+0111 0111 1111 1011 ''
+0111 0111 1111 1100 ''
+0111 0111 1111 1101 ''
+0111 0111 1111 1110 ''
+0111 0111 1111 1111 ''
+0111 1000 /** 0111 100w srcx dest  MUL.size src,dest */
+0111 1001 ''
+0111 1010 indirect
+0111 1010 0000 0000 /** 0111 101w 00sr dest  XCHG.size src,dest */
+0111 1010 0000 0001 ''
+0111 1010 0000 0010 ''
+0111 1010 0000 0011 ''
+0111 1010 0000 0100 ''
+0111 1010 0000 0101 ''
+0111 1010 0000 0110 ''
+0111 1010 0000 0111 ''
+0111 1010 0000 1000 ''
+0111 1010 0000 1001 ''
+0111 1010 0000 1010 ''
+0111 1010 0000 1011 ''
+0111 1010 0000 1100 ''
+0111 1010 0000 1101 ''
+0111 1010 0000 1110 ''
+0111 1010 0000 1111 ''
+0111 1010 0001 0000 ''
+0111 1010 0001 0001 ''
+0111 1010 0001 0010 ''
+0111 1010 0001 0011 ''
+0111 1010 0001 0100 ''
+0111 1010 0001 0101 ''
+0111 1010 0001 0110 ''
+0111 1010 0001 0111 ''
+0111 1010 0001 1000 ''
+0111 1010 0001 1001 ''
+0111 1010 0001 1010 ''
+0111 1010 0001 1011 ''
+0111 1010 0001 1100 ''
+0111 1010 0001 1101 ''
+0111 1010 0001 1110 ''
+0111 1010 0001 1111 ''
+0111 1010 0010 0000 ''
+0111 1010 0010 0001 ''
+0111 1010 0010 0010 ''
+0111 1010 0010 0011 ''
+0111 1010 0010 0100 ''
+0111 1010 0010 0101 ''
+0111 1010 0010 0110 ''
+0111 1010 0010 0111 ''
+0111 1010 0010 1000 ''
+0111 1010 0010 1001 ''
+0111 1010 0010 1010 ''
+0111 1010 0010 1011 ''
+0111 1010 0010 1100 ''
+0111 1010 0010 1101 ''
+0111 1010 0010 1110 ''
+0111 1010 0010 1111 ''
+0111 1010 0011 0000 ''
+0111 1010 0011 0001 ''
+0111 1010 0011 0010 ''
+0111 1010 0011 0011 ''
+0111 1010 0011 0100 ''
+0111 1010 0011 0101 ''
+0111 1010 0011 0110 ''
+0111 1010 0011 0111 ''
+0111 1010 0011 1000 ''
+0111 1010 0011 1001 ''
+0111 1010 0011 1010 ''
+0111 1010 0011 1011 ''
+0111 1010 0011 1100 ''
+0111 1010 0011 1101 ''
+0111 1010 0011 1110 ''
+0111 1010 0011 1111 ''
+0111 1010 0100 0000 unused
+0111 1010 0100 0001 unused
+0111 1010 0100 0010 unused
+0111 1010 0100 0011 unused
+0111 1010 0100 0100 unused
+0111 1010 0100 0101 unused
+0111 1010 0100 0110 unused
+0111 1010 0100 0111 unused
+0111 1010 0100 1000 unused
+0111 1010 0100 1001 unused
+0111 1010 0100 1010 unused
+0111 1010 0100 1011 unused
+0111 1010 0100 1100 unused
+0111 1010 0100 1101 unused
+0111 1010 0100 1110 unused
+0111 1010 0100 1111 unused
+0111 1010 0101 0000 unused
+0111 1010 0101 0001 unused
+0111 1010 0101 0010 unused
+0111 1010 0101 0011 unused
+0111 1010 0101 0100 unused
+0111 1010 0101 0101 unused
+0111 1010 0101 0110 unused
+0111 1010 0101 0111 unused
+0111 1010 0101 1000 unused
+0111 1010 0101 1001 unused
+0111 1010 0101 1010 unused
+0111 1010 0101 1011 unused
+0111 1010 0101 1100 unused
+0111 1010 0101 1101 unused
+0111 1010 0101 1110 unused
+0111 1010 0101 1111 unused
+0111 1010 0110 0000 unused
+0111 1010 0110 0001 unused
+0111 1010 0110 0010 unused
+0111 1010 0110 0011 unused
+0111 1010 0110 0100 unused
+0111 1010 0110 0101 unused
+0111 1010 0110 0110 unused
+0111 1010 0110 0111 unused
+0111 1010 0110 1000 unused
+0111 1010 0110 1001 unused
+0111 1010 0110 1010 unused
+0111 1010 0110 1011 unused
+0111 1010 0110 1100 unused
+0111 1010 0110 1101 unused
+0111 1010 0110 1110 unused
+0111 1010 0110 1111 unused
+0111 1010 0111 0000 unused
+0111 1010 0111 0001 unused
+0111 1010 0111 0010 unused
+0111 1010 0111 0011 unused
+0111 1010 0111 0100 unused
+0111 1010 0111 0101 unused
+0111 1010 0111 0110 unused
+0111 1010 0111 0111 unused
+0111 1010 0111 1000 unused
+0111 1010 0111 1001 unused
+0111 1010 0111 1010 unused
+0111 1010 0111 1011 unused
+0111 1010 0111 1100 unused
+0111 1010 0111 1101 unused
+0111 1010 0111 1110 unused
+0111 1010 0111 1111 unused
+0111 1010 1000 0000 /** 0111 1010 1reg srcx  LDC src,dest */
+0111 1010 1000 0001 ''
+0111 1010 1000 0010 ''
+0111 1010 1000 0011 ''
+0111 1010 1000 0100 ''
+0111 1010 1000 0101 ''
+0111 1010 1000 0110 ''
+0111 1010 1000 0111 ''
+0111 1010 1000 1000 ''
+0111 1010 1000 1001 ''
+0111 1010 1000 1010 ''
+0111 1010 1000 1011 ''
+0111 1010 1000 1100 ''
+0111 1010 1000 1101 ''
+0111 1010 1000 1110 ''
+0111 1010 1000 1111 ''
+0111 1010 1001 0000 ''
+0111 1010 1001 0001 ''
+0111 1010 1001 0010 ''
+0111 1010 1001 0011 ''
+0111 1010 1001 0100 ''
+0111 1010 1001 0101 ''
+0111 1010 1001 0110 ''
+0111 1010 1001 0111 ''
+0111 1010 1001 1000 ''
+0111 1010 1001 1001 ''
+0111 1010 1001 1010 ''
+0111 1010 1001 1011 ''
+0111 1010 1001 1100 ''
+0111 1010 1001 1101 ''
+0111 1010 1001 1110 ''
+0111 1010 1001 1111 ''
+0111 1010 1010 0000 ''
+0111 1010 1010 0001 ''
+0111 1010 1010 0010 ''
+0111 1010 1010 0011 ''
+0111 1010 1010 0100 ''
+0111 1010 1010 0101 ''
+0111 1010 1010 0110 ''
+0111 1010 1010 0111 ''
+0111 1010 1010 1000 ''
+0111 1010 1010 1001 ''
+0111 1010 1010 1010 ''
+0111 1010 1010 1011 ''
+0111 1010 1010 1100 ''
+0111 1010 1010 1101 ''
+0111 1010 1010 1110 ''
+0111 1010 1010 1111 ''
+0111 1010 1011 0000 ''
+0111 1010 1011 0001 ''
+0111 1010 1011 0010 ''
+0111 1010 1011 0011 ''
+0111 1010 1011 0100 ''
+0111 1010 1011 0101 ''
+0111 1010 1011 0110 ''
+0111 1010 1011 0111 ''
+0111 1010 1011 1000 ''
+0111 1010 1011 1001 ''
+0111 1010 1011 1010 ''
+0111 1010 1011 1011 ''
+0111 1010 1011 1100 ''
+0111 1010 1011 1101 ''
+0111 1010 1011 1110 ''
+0111 1010 1011 1111 ''
+0111 1010 1100 0000 ''
+0111 1010 1100 0001 ''
+0111 1010 1100 0010 ''
+0111 1010 1100 0011 ''
+0111 1010 1100 0100 ''
+0111 1010 1100 0101 ''
+0111 1010 1100 0110 ''
+0111 1010 1100 0111 ''
+0111 1010 1100 1000 ''
+0111 1010 1100 1001 ''
+0111 1010 1100 1010 ''
+0111 1010 1100 1011 ''
+0111 1010 1100 1100 ''
+0111 1010 1100 1101 ''
+0111 1010 1100 1110 ''
+0111 1010 1100 1111 ''
+0111 1010 1101 0000 ''
+0111 1010 1101 0001 ''
+0111 1010 1101 0010 ''
+0111 1010 1101 0011 ''
+0111 1010 1101 0100 ''
+0111 1010 1101 0101 ''
+0111 1010 1101 0110 ''
+0111 1010 1101 0111 ''
+0111 1010 1101 1000 ''
+0111 1010 1101 1001 ''
+0111 1010 1101 1010 ''
+0111 1010 1101 1011 ''
+0111 1010 1101 1100 ''
+0111 1010 1101 1101 ''
+0111 1010 1101 1110 ''
+0111 1010 1101 1111 ''
+0111 1010 1110 0000 ''
+0111 1010 1110 0001 ''
+0111 1010 1110 0010 ''
+0111 1010 1110 0011 ''
+0111 1010 1110 0100 ''
+0111 1010 1110 0101 ''
+0111 1010 1110 0110 ''
+0111 1010 1110 0111 ''
+0111 1010 1110 1000 ''
+0111 1010 1110 1001 ''
+0111 1010 1110 1010 ''
+0111 1010 1110 1011 ''
+0111 1010 1110 1100 ''
+0111 1010 1110 1101 ''
+0111 1010 1110 1110 ''
+0111 1010 1110 1111 ''
+0111 1010 1111 0000 ''
+0111 1010 1111 0001 ''
+0111 1010 1111 0010 ''
+0111 1010 1111 0011 ''
+0111 1010 1111 0100 ''
+0111 1010 1111 0101 ''
+0111 1010 1111 0110 ''
+0111 1010 1111 0111 ''
+0111 1010 1111 1000 ''
+0111 1010 1111 1001 ''
+0111 1010 1111 1010 ''
+0111 1010 1111 1011 ''
+0111 1010 1111 1100 ''
+0111 1010 1111 1101 ''
+0111 1010 1111 1110 ''
+0111 1010 1111 1111 ''
+0111 1011 indirect
+0111 1011 0000 0000 /** 0111 101w 00sr dest  XCHG.size src,dest */
+0111 1011 0000 0001 ''
+0111 1011 0000 0010 ''
+0111 1011 0000 0011 ''
+0111 1011 0000 0100 ''
+0111 1011 0000 0101 ''
+0111 1011 0000 0110 ''
+0111 1011 0000 0111 ''
+0111 1011 0000 1000 ''
+0111 1011 0000 1001 ''
+0111 1011 0000 1010 ''
+0111 1011 0000 1011 ''
+0111 1011 0000 1100 ''
+0111 1011 0000 1101 ''
+0111 1011 0000 1110 ''
+0111 1011 0000 1111 ''
+0111 1011 0001 0000 ''
+0111 1011 0001 0001 ''
+0111 1011 0001 0010 ''
+0111 1011 0001 0011 ''
+0111 1011 0001 0100 ''
+0111 1011 0001 0101 ''
+0111 1011 0001 0110 ''
+0111 1011 0001 0111 ''
+0111 1011 0001 1000 ''
+0111 1011 0001 1001 ''
+0111 1011 0001 1010 ''
+0111 1011 0001 1011 ''
+0111 1011 0001 1100 ''
+0111 1011 0001 1101 ''
+0111 1011 0001 1110 ''
+0111 1011 0001 1111 ''
+0111 1011 0010 0000 ''
+0111 1011 0010 0001 ''
+0111 1011 0010 0010 ''
+0111 1011 0010 0011 ''
+0111 1011 0010 0100 ''
+0111 1011 0010 0101 ''
+0111 1011 0010 0110 ''
+0111 1011 0010 0111 ''
+0111 1011 0010 1000 ''
+0111 1011 0010 1001 ''
+0111 1011 0010 1010 ''
+0111 1011 0010 1011 ''
+0111 1011 0010 1100 ''
+0111 1011 0010 1101 ''
+0111 1011 0010 1110 ''
+0111 1011 0010 1111 ''
+0111 1011 0011 0000 ''
+0111 1011 0011 0001 ''
+0111 1011 0011 0010 ''
+0111 1011 0011 0011 ''
+0111 1011 0011 0100 ''
+0111 1011 0011 0101 ''
+0111 1011 0011 0110 ''
+0111 1011 0011 0111 ''
+0111 1011 0011 1000 ''
+0111 1011 0011 1001 ''
+0111 1011 0011 1010 ''
+0111 1011 0011 1011 ''
+0111 1011 0011 1100 ''
+0111 1011 0011 1101 ''
+0111 1011 0011 1110 ''
+0111 1011 0011 1111 ''
+0111 1011 0100 0000 unused
+0111 1011 0100 0001 unused
+0111 1011 0100 0010 unused
+0111 1011 0100 0011 unused
+0111 1011 0100 0100 unused
+0111 1011 0100 0101 unused
+0111 1011 0100 0110 unused
+0111 1011 0100 0111 unused
+0111 1011 0100 1000 unused
+0111 1011 0100 1001 unused
+0111 1011 0100 1010 unused
+0111 1011 0100 1011 unused
+0111 1011 0100 1100 unused
+0111 1011 0100 1101 unused
+0111 1011 0100 1110 unused
+0111 1011 0100 1111 unused
+0111 1011 0101 0000 unused
+0111 1011 0101 0001 unused
+0111 1011 0101 0010 unused
+0111 1011 0101 0011 unused
+0111 1011 0101 0100 unused
+0111 1011 0101 0101 unused
+0111 1011 0101 0110 unused
+0111 1011 0101 0111 unused
+0111 1011 0101 1000 unused
+0111 1011 0101 1001 unused
+0111 1011 0101 1010 unused
+0111 1011 0101 1011 unused
+0111 1011 0101 1100 unused
+0111 1011 0101 1101 unused
+0111 1011 0101 1110 unused
+0111 1011 0101 1111 unused
+0111 1011 0110 0000 unused
+0111 1011 0110 0001 unused
+0111 1011 0110 0010 unused
+0111 1011 0110 0011 unused
+0111 1011 0110 0100 unused
+0111 1011 0110 0101 unused
+0111 1011 0110 0110 unused
+0111 1011 0110 0111 unused
+0111 1011 0110 1000 unused
+0111 1011 0110 1001 unused
+0111 1011 0110 1010 unused
+0111 1011 0110 1011 unused
+0111 1011 0110 1100 unused
+0111 1011 0110 1101 unused
+0111 1011 0110 1110 unused
+0111 1011 0110 1111 unused
+0111 1011 0111 0000 unused
+0111 1011 0111 0001 unused
+0111 1011 0111 0010 unused
+0111 1011 0111 0011 unused
+0111 1011 0111 0100 unused
+0111 1011 0111 0101 unused
+0111 1011 0111 0110 unused
+0111 1011 0111 0111 unused
+0111 1011 0111 1000 unused
+0111 1011 0111 1001 unused
+0111 1011 0111 1010 unused
+0111 1011 0111 1011 unused
+0111 1011 0111 1100 unused
+0111 1011 0111 1101 unused
+0111 1011 0111 1110 unused
+0111 1011 0111 1111 unused
+0111 1011 1000 0000 /** 0111 1011 1src dest  STC src,dest */
+0111 1011 1000 0001 ''
+0111 1011 1000 0010 ''
+0111 1011 1000 0011 ''
+0111 1011 1000 0100 ''
+0111 1011 1000 0101 ''
+0111 1011 1000 0110 ''
+0111 1011 1000 0111 ''
+0111 1011 1000 1000 ''
+0111 1011 1000 1001 ''
+0111 1011 1000 1010 ''
+0111 1011 1000 1011 ''
+0111 1011 1000 1100 ''
+0111 1011 1000 1101 ''
+0111 1011 1000 1110 ''
+0111 1011 1000 1111 ''
+0111 1011 1001 0000 ''
+0111 1011 1001 0001 ''
+0111 1011 1001 0010 ''
+0111 1011 1001 0011 ''
+0111 1011 1001 0100 ''
+0111 1011 1001 0101 ''
+0111 1011 1001 0110 ''
+0111 1011 1001 0111 ''
+0111 1011 1001 1000 ''
+0111 1011 1001 1001 ''
+0111 1011 1001 1010 ''
+0111 1011 1001 1011 ''
+0111 1011 1001 1100 ''
+0111 1011 1001 1101 ''
+0111 1011 1001 1110 ''
+0111 1011 1001 1111 ''
+0111 1011 1010 0000 ''
+0111 1011 1010 0001 ''
+0111 1011 1010 0010 ''
+0111 1011 1010 0011 ''
+0111 1011 1010 0100 ''
+0111 1011 1010 0101 ''
+0111 1011 1010 0110 ''
+0111 1011 1010 0111 ''
+0111 1011 1010 1000 ''
+0111 1011 1010 1001 ''
+0111 1011 1010 1010 ''
+0111 1011 1010 1011 ''
+0111 1011 1010 1100 ''
+0111 1011 1010 1101 ''
+0111 1011 1010 1110 ''
+0111 1011 1010 1111 ''
+0111 1011 1011 0000 ''
+0111 1011 1011 0001 ''
+0111 1011 1011 0010 ''
+0111 1011 1011 0011 ''
+0111 1011 1011 0100 ''
+0111 1011 1011 0101 ''
+0111 1011 1011 0110 ''
+0111 1011 1011 0111 ''
+0111 1011 1011 1000 ''
+0111 1011 1011 1001 ''
+0111 1011 1011 1010 ''
+0111 1011 1011 1011 ''
+0111 1011 1011 1100 ''
+0111 1011 1011 1101 ''
+0111 1011 1011 1110 ''
+0111 1011 1011 1111 ''
+0111 1011 1100 0000 ''
+0111 1011 1100 0001 ''
+0111 1011 1100 0010 ''
+0111 1011 1100 0011 ''
+0111 1011 1100 0100 ''
+0111 1011 1100 0101 ''
+0111 1011 1100 0110 ''
+0111 1011 1100 0111 ''
+0111 1011 1100 1000 ''
+0111 1011 1100 1001 ''
+0111 1011 1100 1010 ''
+0111 1011 1100 1011 ''
+0111 1011 1100 1100 ''
+0111 1011 1100 1101 ''
+0111 1011 1100 1110 ''
+0111 1011 1100 1111 ''
+0111 1011 1101 0000 ''
+0111 1011 1101 0001 ''
+0111 1011 1101 0010 ''
+0111 1011 1101 0011 ''
+0111 1011 1101 0100 ''
+0111 1011 1101 0101 ''
+0111 1011 1101 0110 ''
+0111 1011 1101 0111 ''
+0111 1011 1101 1000 ''
+0111 1011 1101 1001 ''
+0111 1011 1101 1010 ''
+0111 1011 1101 1011 ''
+0111 1011 1101 1100 ''
+0111 1011 1101 1101 ''
+0111 1011 1101 1110 ''
+0111 1011 1101 1111 ''
+0111 1011 1110 0000 ''
+0111 1011 1110 0001 ''
+0111 1011 1110 0010 ''
+0111 1011 1110 0011 ''
+0111 1011 1110 0100 ''
+0111 1011 1110 0101 ''
+0111 1011 1110 0110 ''
+0111 1011 1110 0111 ''
+0111 1011 1110 1000 ''
+0111 1011 1110 1001 ''
+0111 1011 1110 1010 ''
+0111 1011 1110 1011 ''
+0111 1011 1110 1100 ''
+0111 1011 1110 1101 ''
+0111 1011 1110 1110 ''
+0111 1011 1110 1111 ''
+0111 1011 1111 0000 ''
+0111 1011 1111 0001 ''
+0111 1011 1111 0010 ''
+0111 1011 1111 0011 ''
+0111 1011 1111 0100 ''
+0111 1011 1111 0101 ''
+0111 1011 1111 0110 ''
+0111 1011 1111 0111 ''
+0111 1011 1111 1000 ''
+0111 1011 1111 1001 ''
+0111 1011 1111 1010 ''
+0111 1011 1111 1011 ''
+0111 1011 1111 1100 ''
+0111 1011 1111 1101 ''
+0111 1011 1111 1110 ''
+0111 1011 1111 1111 ''
+0111 1100 indirect
+0111 1100 0000 0000 /** 0111 1100 00hl srcx  MOVdir src,R0L */
+0111 1100 0000 0001 ''
+0111 1100 0000 0010 ''
+0111 1100 0000 0011 ''
+0111 1100 0000 0100 ''
+0111 1100 0000 0101 ''
+0111 1100 0000 0110 ''
+0111 1100 0000 0111 ''
+0111 1100 0000 1000 ''
+0111 1100 0000 1001 ''
+0111 1100 0000 1010 ''
+0111 1100 0000 1011 ''
+0111 1100 0000 1100 ''
+0111 1100 0000 1101 ''
+0111 1100 0000 1110 ''
+0111 1100 0000 1111 ''
+0111 1100 0001 0000 ''
+0111 1100 0001 0001 ''
+0111 1100 0001 0010 ''
+0111 1100 0001 0011 ''
+0111 1100 0001 0100 ''
+0111 1100 0001 0101 ''
+0111 1100 0001 0110 ''
+0111 1100 0001 0111 ''
+0111 1100 0001 1000 ''
+0111 1100 0001 1001 ''
+0111 1100 0001 1010 ''
+0111 1100 0001 1011 ''
+0111 1100 0001 1100 ''
+0111 1100 0001 1101 ''
+0111 1100 0001 1110 ''
+0111 1100 0001 1111 ''
+0111 1100 0010 0000 ''
+0111 1100 0010 0001 ''
+0111 1100 0010 0010 ''
+0111 1100 0010 0011 ''
+0111 1100 0010 0100 ''
+0111 1100 0010 0101 ''
+0111 1100 0010 0110 ''
+0111 1100 0010 0111 ''
+0111 1100 0010 1000 ''
+0111 1100 0010 1001 ''
+0111 1100 0010 1010 ''
+0111 1100 0010 1011 ''
+0111 1100 0010 1100 ''
+0111 1100 0010 1101 ''
+0111 1100 0010 1110 ''
+0111 1100 0010 1111 ''
+0111 1100 0011 0000 ''
+0111 1100 0011 0001 ''
+0111 1100 0011 0010 ''
+0111 1100 0011 0011 ''
+0111 1100 0011 0100 ''
+0111 1100 0011 0101 ''
+0111 1100 0011 0110 ''
+0111 1100 0011 0111 ''
+0111 1100 0011 1000 ''
+0111 1100 0011 1001 ''
+0111 1100 0011 1010 ''
+0111 1100 0011 1011 ''
+0111 1100 0011 1100 ''
+0111 1100 0011 1101 ''
+0111 1100 0011 1110 ''
+0111 1100 0011 1111 ''
+0111 1100 0100 0000 /** 0111 110w 0100 dest  MULU.size #IMM,dest */
+0111 1100 0100 0001 ''
+0111 1100 0100 0010 ''
+0111 1100 0100 0011 ''
+0111 1100 0100 0100 ''
+0111 1100 0100 0101 ''
+0111 1100 0100 0110 ''
+0111 1100 0100 0111 ''
+0111 1100 0100 1000 ''
+0111 1100 0100 1001 ''
+0111 1100 0100 1010 ''
+0111 1100 0100 1011 ''
+0111 1100 0100 1100 ''
+0111 1100 0100 1101 ''
+0111 1100 0100 1110 ''
+0111 1100 0100 1111 ''
+0111 1100 0101 0000 /** 0111 110w 0101 dest  MUL.size #IMM,dest */
+0111 1100 0101 0001 ''
+0111 1100 0101 0010 ''
+0111 1100 0101 0011 ''
+0111 1100 0101 0100 ''
+0111 1100 0101 0101 ''
+0111 1100 0101 0110 ''
+0111 1100 0101 0111 ''
+0111 1100 0101 1000 ''
+0111 1100 0101 1001 ''
+0111 1100 0101 1010 ''
+0111 1100 0101 1011 ''
+0111 1100 0101 1100 ''
+0111 1100 0101 1101 ''
+0111 1100 0101 1110 ''
+0111 1100 0101 1111 ''
+0111 1100 0110 0000 /** 0111 1100 0110 dest  EXTS.B dest */
+0111 1100 0110 0001 ''
+0111 1100 0110 0010 ''
+0111 1100 0110 0011 ''
+0111 1100 0110 0100 ''
+0111 1100 0110 0101 ''
+0111 1100 0110 0110 ''
+0111 1100 0110 0111 ''
+0111 1100 0110 1000 ''
+0111 1100 0110 1001 ''
+0111 1100 0110 1010 ''
+0111 1100 0110 1011 ''
+0111 1100 0110 1100 ''
+0111 1100 0110 1101 ''
+0111 1100 0110 1110 ''
+0111 1100 0110 1111 ''
+0111 1100 0111 0000 unused
+0111 1100 0111 0001 unused
+0111 1100 0111 0010 unused
+0111 1100 0111 0011 unused
+0111 1100 0111 0100 unused
+0111 1100 0111 0101 unused
+0111 1100 0111 0110 unused
+0111 1100 0111 0111 unused
+0111 1100 0111 1000 unused
+0111 1100 0111 1001 unused
+0111 1100 0111 1010 unused
+0111 1100 0111 1011 unused
+0111 1100 0111 1100 unused
+0111 1100 0111 1101 unused
+0111 1100 0111 1110 unused
+0111 1100 0111 1111 unused
+0111 1100 1000 0000 /** 0111 1100 10hl dest  MOVdir R0L,dest */
+0111 1100 1000 0001 ''
+0111 1100 1000 0010 ''
+0111 1100 1000 0011 ''
+0111 1100 1000 0100 ''
+0111 1100 1000 0101 ''
+0111 1100 1000 0110 ''
+0111 1100 1000 0111 ''
+0111 1100 1000 1000 ''
+0111 1100 1000 1001 ''
+0111 1100 1000 1010 ''
+0111 1100 1000 1011 ''
+0111 1100 1000 1100 ''
+0111 1100 1000 1101 ''
+0111 1100 1000 1110 ''
+0111 1100 1000 1111 ''
+0111 1100 1001 0000 ''
+0111 1100 1001 0001 ''
+0111 1100 1001 0010 ''
+0111 1100 1001 0011 ''
+0111 1100 1001 0100 ''
+0111 1100 1001 0101 ''
+0111 1100 1001 0110 ''
+0111 1100 1001 0111 ''
+0111 1100 1001 1000 ''
+0111 1100 1001 1001 ''
+0111 1100 1001 1010 ''
+0111 1100 1001 1011 ''
+0111 1100 1001 1100 ''
+0111 1100 1001 1101 ''
+0111 1100 1001 1110 ''
+0111 1100 1001 1111 ''
+0111 1100 1010 0000 ''
+0111 1100 1010 0001 ''
+0111 1100 1010 0010 ''
+0111 1100 1010 0011 ''
+0111 1100 1010 0100 ''
+0111 1100 1010 0101 ''
+0111 1100 1010 0110 ''
+0111 1100 1010 0111 ''
+0111 1100 1010 1000 ''
+0111 1100 1010 1001 ''
+0111 1100 1010 1010 ''
+0111 1100 1010 1011 ''
+0111 1100 1010 1100 ''
+0111 1100 1010 1101 ''
+0111 1100 1010 1110 ''
+0111 1100 1010 1111 ''
+0111 1100 1011 0000 ''
+0111 1100 1011 0001 ''
+0111 1100 1011 0010 ''
+0111 1100 1011 0011 ''
+0111 1100 1011 0100 ''
+0111 1100 1011 0101 ''
+0111 1100 1011 0110 ''
+0111 1100 1011 0111 ''
+0111 1100 1011 1000 ''
+0111 1100 1011 1001 ''
+0111 1100 1011 1010 ''
+0111 1100 1011 1011 ''
+0111 1100 1011 1100 ''
+0111 1100 1011 1101 ''
+0111 1100 1011 1110 ''
+0111 1100 1011 1111 ''
+0111 1100 1100 0000 /** 0111 1100 1100 dest  STC PC,dest */
+0111 1100 1100 0001 ''
+0111 1100 1100 0010 ''
+0111 1100 1100 0011 ''
+0111 1100 1100 0100 ''
+0111 1100 1100 0101 ''
+0111 1100 1100 0110 ''
+0111 1100 1100 0111 ''
+0111 1100 1100 1000 ''
+0111 1100 1100 1001 ''
+0111 1100 1100 1010 ''
+0111 1100 1100 1011 ''
+0111 1100 1100 1100 ''
+0111 1100 1100 1101 ''
+0111 1100 1100 1110 ''
+0111 1100 1100 1111 ''
+0111 1100 1101 0000 unused
+0111 1100 1101 0001 unused
+0111 1100 1101 0010 unused
+0111 1100 1101 0011 unused
+0111 1100 1101 0100 unused
+0111 1100 1101 0101 unused
+0111 1100 1101 0110 unused
+0111 1100 1101 0111 unused
+0111 1100 1101 1000 unused
+0111 1100 1101 1001 unused
+0111 1100 1101 1010 unused
+0111 1100 1101 1011 unused
+0111 1100 1101 1100 unused
+0111 1100 1101 1101 unused
+0111 1100 1101 1110 unused
+0111 1100 1101 1111 unused
+0111 1100 1110 0000 /** 0111 110w 1110 0000  DIVU.size #IMM */
+0111 1100 1110 0001 /** 0111 110w 1110 0001  DIV.size #IMM */
+0111 1100 1110 0010 /** 0111 110w 1110 0010  PUSH.size:G #IMM */
+0111 1100 1110 0011 /** 0111 110w 1110 0011  DIVX.size #IMM */
+0111 1100 1110 0100 /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+0111 1100 1110 0101 ''
+0111 1100 1110 0110 ''
+0111 1100 1110 0111 ''
+0111 1100 1110 1000 /** 0111 110w 1110 100z  SMOVB.size */
+0111 1100 1110 1001 ''
+0111 1100 1110 1010 /** 0111 110w 1110 1010  SSTR.size */
+0111 1100 1110 1011 /** 0111 110w 1110 1011  ADD.size:G #IMM,sp */
+0111 1100 1110 1100 /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+0111 1100 1110 1101 ''
+0111 1100 1110 1110 ''
+0111 1100 1110 1111 ''
+0111 1100 1111 0000 /** 0111 1100 1111 0000  LDCTX abs16,abs20 */
+0111 1100 1111 0001 /** 0111 110w 1111 0001  RMPA.size */
+0111 1100 1111 0010 /** 0111 1100 1111 0010  ENTER #IMM8 */
+0111 1100 1111 0011 /** 0111 1100 1111 0011  EXTS.W R0 */
+0111 1100 1111 0100 unused
+0111 1100 1111 0101 unused
+0111 1100 1111 0110 unused
+0111 1100 1111 0111 unused
+0111 1100 1111 1000 unused
+0111 1100 1111 1001 unused
+0111 1100 1111 1010 unused
+0111 1100 1111 1011 unused
+0111 1100 1111 1100 unused
+0111 1100 1111 1101 unused
+0111 1100 1111 1110 unused
+0111 1100 1111 1111 unused
+0111 1101 indirect
+0111 1101 0000 0000 /** 0111 1101 0000 srcx  JMPI.A src */
+0111 1101 0000 0001 ''
+0111 1101 0000 0010 ''
+0111 1101 0000 0011 ''
+0111 1101 0000 0100 ''
+0111 1101 0000 0101 ''
+0111 1101 0000 0110 ''
+0111 1101 0000 0111 ''
+0111 1101 0000 1000 ''
+0111 1101 0000 1001 ''
+0111 1101 0000 1010 ''
+0111 1101 0000 1011 ''
+0111 1101 0000 1100 ''
+0111 1101 0000 1101 ''
+0111 1101 0000 1110 ''
+0111 1101 0000 1111 ''
+0111 1101 0001 0000 /** 0111 1101 0001 srcx  JSRI.A src */
+0111 1101 0001 0001 ''
+0111 1101 0001 0010 ''
+0111 1101 0001 0011 ''
+0111 1101 0001 0100 ''
+0111 1101 0001 0101 ''
+0111 1101 0001 0110 ''
+0111 1101 0001 0111 ''
+0111 1101 0001 1000 ''
+0111 1101 0001 1001 ''
+0111 1101 0001 1010 ''
+0111 1101 0001 1011 ''
+0111 1101 0001 1100 ''
+0111 1101 0001 1101 ''
+0111 1101 0001 1110 ''
+0111 1101 0001 1111 ''
+0111 1101 0010 0000 /** 0111 1101 0010 srcx  JMPI.W src */
+0111 1101 0010 0001 ''
+0111 1101 0010 0010 ''
+0111 1101 0010 0011 ''
+0111 1101 0010 0100 ''
+0111 1101 0010 0101 ''
+0111 1101 0010 0110 ''
+0111 1101 0010 0111 ''
+0111 1101 0010 1000 ''
+0111 1101 0010 1001 ''
+0111 1101 0010 1010 ''
+0111 1101 0010 1011 ''
+0111 1101 0010 1100 ''
+0111 1101 0010 1101 ''
+0111 1101 0010 1110 ''
+0111 1101 0010 1111 ''
+0111 1101 0011 0000 /** 0111 1101 0011 srcx  JSRI.W src */
+0111 1101 0011 0001 ''
+0111 1101 0011 0010 ''
+0111 1101 0011 0011 ''
+0111 1101 0011 0100 ''
+0111 1101 0011 0101 ''
+0111 1101 0011 0110 ''
+0111 1101 0011 0111 ''
+0111 1101 0011 1000 ''
+0111 1101 0011 1001 ''
+0111 1101 0011 1010 ''
+0111 1101 0011 1011 ''
+0111 1101 0011 1100 ''
+0111 1101 0011 1101 ''
+0111 1101 0011 1110 ''
+0111 1101 0011 1111 ''
+0111 1101 0100 0000 /** 0111 110w 0100 dest  MULU.size #IMM,dest */
+0111 1101 0100 0001 ''
+0111 1101 0100 0010 ''
+0111 1101 0100 0011 ''
+0111 1101 0100 0100 ''
+0111 1101 0100 0101 ''
+0111 1101 0100 0110 ''
+0111 1101 0100 0111 ''
+0111 1101 0100 1000 ''
+0111 1101 0100 1001 ''
+0111 1101 0100 1010 ''
+0111 1101 0100 1011 ''
+0111 1101 0100 1100 ''
+0111 1101 0100 1101 ''
+0111 1101 0100 1110 ''
+0111 1101 0100 1111 ''
+0111 1101 0101 0000 /** 0111 110w 0101 dest  MUL.size #IMM,dest */
+0111 1101 0101 0001 ''
+0111 1101 0101 0010 ''
+0111 1101 0101 0011 ''
+0111 1101 0101 0100 ''
+0111 1101 0101 0101 ''
+0111 1101 0101 0110 ''
+0111 1101 0101 0111 ''
+0111 1101 0101 1000 ''
+0111 1101 0101 1001 ''
+0111 1101 0101 1010 ''
+0111 1101 0101 1011 ''
+0111 1101 0101 1100 ''
+0111 1101 0101 1101 ''
+0111 1101 0101 1110 ''
+0111 1101 0101 1111 ''
+0111 1101 0110 0000 unused
+0111 1101 0110 0001 unused
+0111 1101 0110 0010 unused
+0111 1101 0110 0011 unused
+0111 1101 0110 0100 unused
+0111 1101 0110 0101 unused
+0111 1101 0110 0110 unused
+0111 1101 0110 0111 unused
+0111 1101 0110 1000 unused
+0111 1101 0110 1001 unused
+0111 1101 0110 1010 unused
+0111 1101 0110 1011 unused
+0111 1101 0110 1100 unused
+0111 1101 0110 1101 unused
+0111 1101 0110 1110 unused
+0111 1101 0110 1111 unused
+0111 1101 0111 0000 unused
+0111 1101 0111 0001 unused
+0111 1101 0111 0010 unused
+0111 1101 0111 0011 unused
+0111 1101 0111 0100 unused
+0111 1101 0111 0101 unused
+0111 1101 0111 0110 unused
+0111 1101 0111 0111 unused
+0111 1101 0111 1000 unused
+0111 1101 0111 1001 unused
+0111 1101 0111 1010 unused
+0111 1101 0111 1011 unused
+0111 1101 0111 1100 unused
+0111 1101 0111 1101 unused
+0111 1101 0111 1110 unused
+0111 1101 0111 1111 unused
+0111 1101 1000 0000 unused
+0111 1101 1000 0001 unused
+0111 1101 1000 0010 unused
+0111 1101 1000 0011 unused
+0111 1101 1000 0100 unused
+0111 1101 1000 0101 unused
+0111 1101 1000 0110 unused
+0111 1101 1000 0111 unused
+0111 1101 1000 1000 unused
+0111 1101 1000 1001 unused
+0111 1101 1000 1010 unused
+0111 1101 1000 1011 unused
+0111 1101 1000 1100 unused
+0111 1101 1000 1101 unused
+0111 1101 1000 1110 unused
+0111 1101 1000 1111 unused
+0111 1101 1001 0000 /** 0111 1101 1001 srcx  PUSHA src */
+0111 1101 1001 0001 ''
+0111 1101 1001 0010 ''
+0111 1101 1001 0011 ''
+0111 1101 1001 0100 ''
+0111 1101 1001 0101 ''
+0111 1101 1001 0110 ''
+0111 1101 1001 0111 ''
+0111 1101 1001 1000 ''
+0111 1101 1001 1001 ''
+0111 1101 1001 1010 ''
+0111 1101 1001 1011 ''
+0111 1101 1001 1100 ''
+0111 1101 1001 1101 ''
+0111 1101 1001 1110 ''
+0111 1101 1001 1111 ''
+0111 1101 1010 0000 /** 0111 1101 1010 0flg  LDIPL #IMM */
+0111 1101 1010 0001 ''
+0111 1101 1010 0010 ''
+0111 1101 1010 0011 ''
+0111 1101 1010 0100 ''
+0111 1101 1010 0101 ''
+0111 1101 1010 0110 ''
+0111 1101 1010 0111 ''
+0111 1101 1010 1000 unused
+0111 1101 1010 1001 unused
+0111 1101 1010 1010 unused
+0111 1101 1010 1011 unused
+0111 1101 1010 1100 unused
+0111 1101 1010 1101 unused
+0111 1101 1010 1110 unused
+0111 1101 1010 1111 unused
+0111 1101 1011 0000 /** 0111 1101 1011 immm  ADD.size:Q #IMM,sp */
+0111 1101 1011 0001 ''
+0111 1101 1011 0010 ''
+0111 1101 1011 0011 ''
+0111 1101 1011 0100 ''
+0111 1101 1011 0101 ''
+0111 1101 1011 0110 ''
+0111 1101 1011 0111 ''
+0111 1101 1011 1000 ''
+0111 1101 1011 1001 ''
+0111 1101 1011 1010 ''
+0111 1101 1011 1011 ''
+0111 1101 1011 1100 ''
+0111 1101 1011 1101 ''
+0111 1101 1011 1110 ''
+0111 1101 1011 1111 ''
+0111 1101 1100 0000 /** 0111 1101 1100 cond  Jcnd label */
+0111 1101 1100 0001 ''
+0111 1101 1100 0010 ''
+0111 1101 1100 0011 ''
+0111 1101 1100 0100 ''
+0111 1101 1100 0101 ''
+0111 1101 1100 0110 ''
+0111 1101 1100 0111 ''
+0111 1101 1100 1000 ''
+0111 1101 1100 1001 ''
+0111 1101 1100 1010 ''
+0111 1101 1100 1011 ''
+0111 1101 1100 1100 ''
+0111 1101 1100 1101 ''
+0111 1101 1100 1110 ''
+0111 1101 1100 1111 ''
+0111 1101 1101 0000 /** 0111 1101 1101 cond  BMcnd C  */
+0111 1101 1101 0001 ''
+0111 1101 1101 0010 ''
+0111 1101 1101 0011 ''
+0111 1101 1101 0100 ''
+0111 1101 1101 0101 ''
+0111 1101 1101 0110 ''
+0111 1101 1101 0111 ''
+0111 1101 1101 1000 ''
+0111 1101 1101 1001 ''
+0111 1101 1101 1010 ''
+0111 1101 1101 1011 ''
+0111 1101 1101 1100 ''
+0111 1101 1101 1101 ''
+0111 1101 1101 1110 ''
+0111 1101 1101 1111 ''
+0111 1101 1110 0000 /** 0111 110w 1110 0000  DIVU.size #IMM */
+0111 1101 1110 0001 /** 0111 110w 1110 0001  DIV.size #IMM */
+0111 1101 1110 0010 /** 0111 110w 1110 0010  PUSH.size:G #IMM */
+0111 1101 1110 0011 /** 0111 110w 1110 0011  DIVX.size #IMM */
+0111 1101 1110 0100 /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+0111 1101 1110 0101 ''
+0111 1101 1110 0110 ''
+0111 1101 1110 0111 ''
+0111 1101 1110 1000 /** 0111 110w 1110 100z  SMOVB.size */
+0111 1101 1110 1001 ''
+0111 1101 1110 1010 /** 0111 110w 1110 1010  SSTR.size */
+0111 1101 1110 1011 /** 0111 110w 1110 1011  ADD.size:G #IMM,sp */
+0111 1101 1110 1100 /** 0111 110w 1110 i1c s  DADC,DADD,DSBB,DSUB */
+0111 1101 1110 1101 ''
+0111 1101 1110 1110 ''
+0111 1101 1110 1111 ''
+0111 1101 1111 0000 /** 0111 1101 1111 0000  STCTX abs16,abs20 */
+0111 1101 1111 0001 /** 0111 110w 1111 0001  RMPA.size */
+0111 1101 1111 0010 /** 0111 1101 1111 0010  EXITD */
+0111 1101 1111 0011 /** 0111 1101 1111 0011  WAIT */
+0111 1101 1111 0100 unused
+0111 1101 1111 0101 unused
+0111 1101 1111 0110 unused
+0111 1101 1111 0111 unused
+0111 1101 1111 1000 unused
+0111 1101 1111 1001 unused
+0111 1101 1111 1010 unused
+0111 1101 1111 1011 unused
+0111 1101 1111 1100 unused
+0111 1101 1111 1101 unused
+0111 1101 1111 1110 unused
+0111 1101 1111 1111 unused
+0111 1110 indirect
+0111 1110 0000 0000 /** 0111 1110 0000 dest  BTSTC dest */
+0111 1110 0000 0001 ''
+0111 1110 0000 0010 ''
+0111 1110 0000 0011 ''
+0111 1110 0000 0100 ''
+0111 1110 0000 0101 ''
+0111 1110 0000 0110 ''
+0111 1110 0000 0111 ''
+0111 1110 0000 1000 ''
+0111 1110 0000 1001 ''
+0111 1110 0000 1010 ''
+0111 1110 0000 1011 ''
+0111 1110 0000 1100 ''
+0111 1110 0000 1101 ''
+0111 1110 0000 1110 ''
+0111 1110 0000 1111 ''
+0111 1110 0001 0000 /** 0111 1110 0001 dest  BTSTS dest */
+0111 1110 0001 0001 ''
+0111 1110 0001 0010 ''
+0111 1110 0001 0011 ''
+0111 1110 0001 0100 ''
+0111 1110 0001 0101 ''
+0111 1110 0001 0110 ''
+0111 1110 0001 0111 ''
+0111 1110 0001 1000 ''
+0111 1110 0001 1001 ''
+0111 1110 0001 1010 ''
+0111 1110 0001 1011 ''
+0111 1110 0001 1100 ''
+0111 1110 0001 1101 ''
+0111 1110 0001 1110 ''
+0111 1110 0001 1111 ''
+0111 1110 0010 0000 /** 0111 1110 0010 dest  BMcnd dest  */
+0111 1110 0010 0001 ''
+0111 1110 0010 0010 ''
+0111 1110 0010 0011 ''
+0111 1110 0010 0100 ''
+0111 1110 0010 0101 ''
+0111 1110 0010 0110 ''
+0111 1110 0010 0111 ''
+0111 1110 0010 1000 ''
+0111 1110 0010 1001 ''
+0111 1110 0010 1010 ''
+0111 1110 0010 1011 ''
+0111 1110 0010 1100 ''
+0111 1110 0010 1101 ''
+0111 1110 0010 1110 ''
+0111 1110 0010 1111 ''
+0111 1110 0011 0000 /** 0111 1110 0011 srcx  BNTST src */
+0111 1110 0011 0001 ''
+0111 1110 0011 0010 ''
+0111 1110 0011 0011 ''
+0111 1110 0011 0100 ''
+0111 1110 0011 0101 ''
+0111 1110 0011 0110 ''
+0111 1110 0011 0111 ''
+0111 1110 0011 1000 ''
+0111 1110 0011 1001 ''
+0111 1110 0011 1010 ''
+0111 1110 0011 1011 ''
+0111 1110 0011 1100 ''
+0111 1110 0011 1101 ''
+0111 1110 0011 1110 ''
+0111 1110 0011 1111 ''
+0111 1110 0100 0000 /** 0111 1110 0100 srcx  BAND src */
+0111 1110 0100 0001 ''
+0111 1110 0100 0010 ''
+0111 1110 0100 0011 ''
+0111 1110 0100 0100 ''
+0111 1110 0100 0101 ''
+0111 1110 0100 0110 ''
+0111 1110 0100 0111 ''
+0111 1110 0100 1000 ''
+0111 1110 0100 1001 ''
+0111 1110 0100 1010 ''
+0111 1110 0100 1011 ''
+0111 1110 0100 1100 ''
+0111 1110 0100 1101 ''
+0111 1110 0100 1110 ''
+0111 1110 0100 1111 ''
+0111 1110 0101 0000 /** 0111 1110 0101 srcx  BNAND src */
+0111 1110 0101 0001 ''
+0111 1110 0101 0010 ''
+0111 1110 0101 0011 ''
+0111 1110 0101 0100 ''
+0111 1110 0101 0101 ''
+0111 1110 0101 0110 ''
+0111 1110 0101 0111 ''
+0111 1110 0101 1000 ''
+0111 1110 0101 1001 ''
+0111 1110 0101 1010 ''
+0111 1110 0101 1011 ''
+0111 1110 0101 1100 ''
+0111 1110 0101 1101 ''
+0111 1110 0101 1110 ''
+0111 1110 0101 1111 ''
+0111 1110 0110 0000 /** 0111 1110 0110 srcx  BOR src */
+0111 1110 0110 0001 ''
+0111 1110 0110 0010 ''
+0111 1110 0110 0011 ''
+0111 1110 0110 0100 ''
+0111 1110 0110 0101 ''
+0111 1110 0110 0110 ''
+0111 1110 0110 0111 ''
+0111 1110 0110 1000 ''
+0111 1110 0110 1001 ''
+0111 1110 0110 1010 ''
+0111 1110 0110 1011 ''
+0111 1110 0110 1100 ''
+0111 1110 0110 1101 ''
+0111 1110 0110 1110 ''
+0111 1110 0110 1111 ''
+0111 1110 0111 0000 /** 0111 1110 0111 srcx  BNOR src */
+0111 1110 0111 0001 ''
+0111 1110 0111 0010 ''
+0111 1110 0111 0011 ''
+0111 1110 0111 0100 ''
+0111 1110 0111 0101 ''
+0111 1110 0111 0110 ''
+0111 1110 0111 0111 ''
+0111 1110 0111 1000 ''
+0111 1110 0111 1001 ''
+0111 1110 0111 1010 ''
+0111 1110 0111 1011 ''
+0111 1110 0111 1100 ''
+0111 1110 0111 1101 ''
+0111 1110 0111 1110 ''
+0111 1110 0111 1111 ''
+0111 1110 1000 0000 /** 0111 1110 1000 dest  BCLR:G dest */
+0111 1110 1000 0001 ''
+0111 1110 1000 0010 ''
+0111 1110 1000 0011 ''
+0111 1110 1000 0100 ''
+0111 1110 1000 0101 ''
+0111 1110 1000 0110 ''
+0111 1110 1000 0111 ''
+0111 1110 1000 1000 ''
+0111 1110 1000 1001 ''
+0111 1110 1000 1010 ''
+0111 1110 1000 1011 ''
+0111 1110 1000 1100 ''
+0111 1110 1000 1101 ''
+0111 1110 1000 1110 ''
+0111 1110 1000 1111 ''
+0111 1110 1001 0000 /** 0111 1110 1001 dest  BSET:G dest */
+0111 1110 1001 0001 ''
+0111 1110 1001 0010 ''
+0111 1110 1001 0011 ''
+0111 1110 1001 0100 ''
+0111 1110 1001 0101 ''
+0111 1110 1001 0110 ''
+0111 1110 1001 0111 ''
+0111 1110 1001 1000 ''
+0111 1110 1001 1001 ''
+0111 1110 1001 1010 ''
+0111 1110 1001 1011 ''
+0111 1110 1001 1100 ''
+0111 1110 1001 1101 ''
+0111 1110 1001 1110 ''
+0111 1110 1001 1111 ''
+0111 1110 1010 0000 /** 0111 1110 1010 dest  BNOT:G dest */
+0111 1110 1010 0001 ''
+0111 1110 1010 0010 ''
+0111 1110 1010 0011 ''
+0111 1110 1010 0100 ''
+0111 1110 1010 0101 ''
+0111 1110 1010 0110 ''
+0111 1110 1010 0111 ''
+0111 1110 1010 1000 ''
+0111 1110 1010 1001 ''
+0111 1110 1010 1010 ''
+0111 1110 1010 1011 ''
+0111 1110 1010 1100 ''
+0111 1110 1010 1101 ''
+0111 1110 1010 1110 ''
+0111 1110 1010 1111 ''
+0111 1110 1011 0000 /** 0111 1110 1011 srcx  BTST:G src */
+0111 1110 1011 0001 ''
+0111 1110 1011 0010 ''
+0111 1110 1011 0011 ''
+0111 1110 1011 0100 ''
+0111 1110 1011 0101 ''
+0111 1110 1011 0110 ''
+0111 1110 1011 0111 ''
+0111 1110 1011 1000 ''
+0111 1110 1011 1001 ''
+0111 1110 1011 1010 ''
+0111 1110 1011 1011 ''
+0111 1110 1011 1100 ''
+0111 1110 1011 1101 ''
+0111 1110 1011 1110 ''
+0111 1110 1011 1111 ''
+0111 1110 1100 0000 /** 0111 1110 1100 srcx  BXOR src */
+0111 1110 1100 0001 ''
+0111 1110 1100 0010 ''
+0111 1110 1100 0011 ''
+0111 1110 1100 0100 ''
+0111 1110 1100 0101 ''
+0111 1110 1100 0110 ''
+0111 1110 1100 0111 ''
+0111 1110 1100 1000 ''
+0111 1110 1100 1001 ''
+0111 1110 1100 1010 ''
+0111 1110 1100 1011 ''
+0111 1110 1100 1100 ''
+0111 1110 1100 1101 ''
+0111 1110 1100 1110 ''
+0111 1110 1100 1111 ''
+0111 1110 1101 0000 /** 0111 1110 1101 srcx  BNXOR src */
+0111 1110 1101 0001 ''
+0111 1110 1101 0010 ''
+0111 1110 1101 0011 ''
+0111 1110 1101 0100 ''
+0111 1110 1101 0101 ''
+0111 1110 1101 0110 ''
+0111 1110 1101 0111 ''
+0111 1110 1101 1000 ''
+0111 1110 1101 1001 ''
+0111 1110 1101 1010 ''
+0111 1110 1101 1011 ''
+0111 1110 1101 1100 ''
+0111 1110 1101 1101 ''
+0111 1110 1101 1110 ''
+0111 1110 1101 1111 ''
+0111 1110 1110 0000 unused
+0111 1110 1110 0001 unused
+0111 1110 1110 0010 unused
+0111 1110 1110 0011 unused
+0111 1110 1110 0100 unused
+0111 1110 1110 0101 unused
+0111 1110 1110 0110 unused
+0111 1110 1110 0111 unused
+0111 1110 1110 1000 unused
+0111 1110 1110 1001 unused
+0111 1110 1110 1010 unused
+0111 1110 1110 1011 unused
+0111 1110 1110 1100 unused
+0111 1110 1110 1101 unused
+0111 1110 1110 1110 unused
+0111 1110 1110 1111 unused
+0111 1110 1111 0000 unused
+0111 1110 1111 0001 unused
+0111 1110 1111 0010 unused
+0111 1110 1111 0011 unused
+0111 1110 1111 0100 unused
+0111 1110 1111 0101 unused
+0111 1110 1111 0110 unused
+0111 1110 1111 0111 unused
+0111 1110 1111 1000 unused
+0111 1110 1111 1001 unused
+0111 1110 1111 1010 unused
+0111 1110 1111 1011 unused
+0111 1110 1111 1100 unused
+0111 1110 1111 1101 unused
+0111 1110 1111 1110 unused
+0111 1110 1111 1111 unused
+0111 1111 unused
+1000 0000 /** 1000 000w srcx dest  TST.size src,dest */
+1000 0001 ''
+1000 0010 /** 1000 s010            PUSH.B:S src */
+1000 0011 /** 1000 0dst            ADD.B:S #IMM8,dst */
+1000 0100 ''
+1000 0101 ''
+1000 0110 ''
+1000 0111 ''
+1000 1000 /** 1000 100w srcx dest  XOR.size src,dest */
+1000 1001 ''
+1000 1010 /** 1000 s010            PUSH.B:S src */
+1000 1011 /** 1000 1dst            SUB.B:S #IMM8,dest */
+1000 1100 ''
+1000 1101 ''
+1000 1110 ''
+1000 1111 ''
+1001 0000 /** 1001 000w srcx dest  AND.size:G src.dest */
+1001 0001 ''
+1001 0010 /** 1001 d010            POP.B:S dest */
+1001 0011 /** 1001 0dst            AND.B:S #IMM8,dest */
+1001 0100 ''
+1001 0101 ''
+1001 0110 ''
+1001 0111 ''
+1001 1000 /** 1001 100w srcx dest  OR.size:G src,dest */
+1001 1001 ''
+1001 1010 /** 1001 d010            POP.B:S dest */
+1001 1011 /** 1001 1dst            OR.B:S #IMM8,dest */
+1001 1100 ''
+1001 1101 ''
+1001 1110 ''
+1001 1111 ''
+1010 0000 /** 1010 000w srcx dest  ADD.size:G src,dest */
+1010 0001 ''
+1010 0010 /** 1w10 d010            MOV.size:S #IMM,dest */
+1010 0011 /** 1010 0dst            INC.B dest */
+1010 0100 ''
+1010 0101 ''
+1010 0110 ''
+1010 0111 ''
+1010 1000 /** 1010 100w srcx dest  SUB.size:G src,dest */
+1010 1001 ''
+1010 1010 /** 1w10 d010            MOV.size:S #IMM,dest */
+1010 1011 /** 1010 1dst            DEC.B dest */
+1010 1100 ''
+1010 1101 ''
+1010 1110 ''
+1010 1111 ''
+1011 0000 /** 1011 000w srcx dest  ADC.size src,dest */
+1011 0001 ''
+1011 0010 /** 1011 d010            INC.W dest */
+1011 0011 /** 1011 0dst            MOV.B:Z #0,dest */
+1011 0100 ''
+1011 0101 ''
+1011 0110 ''
+1011 0111 ''
+1011 1000 /** 1011 100w srcx dest  SBB.size src,dest */
+1011 1001 ''
+1011 1010 /** 1011 d010            INC.W dest */
+1011 1011 /** 1011 1dst            NOT.B:S dest */
+1011 1100 ''
+1011 1101 ''
+1011 1110 ''
+1011 1111 ''
+1100 0000 /** 1100 000w srcx dest  CMP.size:G src,dest */
+1100 0001 ''
+1100 0010 /** 1100 s010            PUSH.W:S src */
+1100 0011 /** 1100 0dst            MOV.B:S #IMM8,dest */
+1100 0100 ''
+1100 0101 ''
+1100 0110 ''
+1100 0111 ''
+1100 1000 /** 1100 100w immm dest  ADD.size:Q #IMM,dest */
+1100 1001 ''
+1100 1010 /** 1100 s010            PUSH.W:S src */
+1100 1011 /** 1100 1dst            STZ #IMM8,dest */
+1100 1100 ''
+1100 1101 ''
+1100 1110 ''
+1100 1111 ''
+1101 0000 /** 1101 000w immm dest  CMP.size:Q #IMM,dest */
+1101 0001 ''
+1101 0010 /** 1101 d010            POP.W:S dest */
+1101 0011 /** 1101 0dst            STNZ #IMM8,dest */
+1101 0100 ''
+1101 0101 ''
+1101 0110 ''
+1101 0111 ''
+1101 1000 /** 1101 100w immm dest  MOV.size:Q #IMM,dest */
+1101 1001 ''
+1101 1010 /** 1101 d010            POP.W:S dest */
+1101 1011 /** 1101 1dst            STZX #IMM81,#IMM82,dest */
+1101 1100 ''
+1101 1101 ''
+1101 1110 ''
+1101 1111 ''
+1110 0000 /** 1110 000w immm dest  ROT.size #IMM,dest */
+1110 0001 ''
+1110 0010 /** 1w10 d010            MOV.size:S #IMM,dest */
+1110 0011 /** 1110 0dst            CMP.B:S #IMM8,dest */
+1110 0100 ''
+1110 0101 ''
+1110 0110 ''
+1110 0111 ''
+1110 1000 /** 1110 100w immm dest  SHL.size #IMM, dest */
+1110 1001 ''
+1110 1010 /** 1w10 d010            MOV.size:S #IMM,dest */
+1110 1011 indirect
+1110 1011 0000 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0000 0001 /** 1110 1011 000d 0001  SHL.L R1H,dest */
+1110 1011 0000 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0000 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0000 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0000 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0000 0110 unused
+1110 1011 0000 0111 unused
+1110 1011 0000 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0000 1001 ''
+1110 1011 0000 1010 ''
+1110 1011 0000 1011 ''
+1110 1011 0000 1100 ''
+1110 1011 0000 1101 ''
+1110 1011 0000 1110 ''
+1110 1011 0000 1111 ''
+1110 1011 0001 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0001 0001 /** 1110 1011 000d 0001  SHL.L R1H,dest */
+1110 1011 0001 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0001 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0001 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0001 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0001 0110 unused
+1110 1011 0001 0111 unused
+1110 1011 0001 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0001 1001 ''
+1110 1011 0001 1010 ''
+1110 1011 0001 1011 ''
+1110 1011 0001 1100 ''
+1110 1011 0001 1101 ''
+1110 1011 0001 1110 ''
+1110 1011 0001 1111 ''
+1110 1011 0010 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0010 0001 /** 1110 1011 001d 0001  SHA.L R1H,dest */
+1110 1011 0010 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0010 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0010 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0010 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0010 0110 unused
+1110 1011 0010 0111 unused
+1110 1011 0010 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0010 1001 ''
+1110 1011 0010 1010 ''
+1110 1011 0010 1011 ''
+1110 1011 0010 1100 ''
+1110 1011 0010 1101 ''
+1110 1011 0010 1110 ''
+1110 1011 0010 1111 ''
+1110 1011 0011 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0011 0001 /** 1110 1011 001d 0001  SHA.L R1H,dest */
+1110 1011 0011 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0011 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0011 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0011 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0011 0110 unused
+1110 1011 0011 0111 unused
+1110 1011 0011 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0011 1001 ''
+1110 1011 0011 1010 ''
+1110 1011 0011 1011 ''
+1110 1011 0011 1100 ''
+1110 1011 0011 1101 ''
+1110 1011 0011 1110 ''
+1110 1011 0011 1111 ''
+1110 1011 0100 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0100 0001 unused
+1110 1011 0100 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0100 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0100 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0100 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0100 0110 unused
+1110 1011 0100 0111 unused
+1110 1011 0100 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0100 1001 ''
+1110 1011 0100 1010 ''
+1110 1011 0100 1011 ''
+1110 1011 0100 1100 ''
+1110 1011 0100 1101 ''
+1110 1011 0100 1110 ''
+1110 1011 0100 1111 ''
+1110 1011 0101 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0101 0001 unused
+1110 1011 0101 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0101 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0101 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0101 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0101 0110 unused
+1110 1011 0101 0111 unused
+1110 1011 0101 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0101 1001 ''
+1110 1011 0101 1010 ''
+1110 1011 0101 1011 ''
+1110 1011 0101 1100 ''
+1110 1011 0101 1101 ''
+1110 1011 0101 1110 ''
+1110 1011 0101 1111 ''
+1110 1011 0110 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0110 0001 unused
+1110 1011 0110 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0110 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0110 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0110 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0110 0110 unused
+1110 1011 0110 0111 unused
+1110 1011 0110 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0110 1001 ''
+1110 1011 0110 1010 ''
+1110 1011 0110 1011 ''
+1110 1011 0110 1100 ''
+1110 1011 0110 1101 ''
+1110 1011 0110 1110 ''
+1110 1011 0110 1111 ''
+1110 1011 0111 0000 /** 1110 1011 0reg 0000  LDC #IMM16,dest */
+1110 1011 0111 0001 unused
+1110 1011 0111 0010 /** 1110 1011 0src 0010  PUSHC src */
+1110 1011 0111 0011 /** 1110 1011 0reg 0011  POPC dest */
+1110 1011 0111 0100 /** 1110 1011 0flg 0100  FSET dest */
+1110 1011 0111 0101 /** 1110 1011 0flg 0101  FCLR dest */
+1110 1011 0111 0110 unused
+1110 1011 0111 0111 unused
+1110 1011 0111 1000 /** 1110 1011 0reg 1src  MOVA src,dest */
+1110 1011 0111 1001 ''
+1110 1011 0111 1010 ''
+1110 1011 0111 1011 ''
+1110 1011 0111 1100 ''
+1110 1011 0111 1101 ''
+1110 1011 0111 1110 ''
+1110 1011 0111 1111 ''
+1110 1011 1000 0000 /** 1110 1011 100d immm  SHL.L #IMM,dest */
+1110 1011 1000 0001 ''
+1110 1011 1000 0010 ''
+1110 1011 1000 0011 ''
+1110 1011 1000 0100 ''
+1110 1011 1000 0101 ''
+1110 1011 1000 0110 ''
+1110 1011 1000 0111 ''
+1110 1011 1000 1000 ''
+1110 1011 1000 1001 ''
+1110 1011 1000 1010 ''
+1110 1011 1000 1011 ''
+1110 1011 1000 1100 ''
+1110 1011 1000 1101 ''
+1110 1011 1000 1110 ''
+1110 1011 1000 1111 ''
+1110 1011 1001 0000 ''
+1110 1011 1001 0001 ''
+1110 1011 1001 0010 ''
+1110 1011 1001 0011 ''
+1110 1011 1001 0100 ''
+1110 1011 1001 0101 ''
+1110 1011 1001 0110 ''
+1110 1011 1001 0111 ''
+1110 1011 1001 1000 ''
+1110 1011 1001 1001 ''
+1110 1011 1001 1010 ''
+1110 1011 1001 1011 ''
+1110 1011 1001 1100 ''
+1110 1011 1001 1101 ''
+1110 1011 1001 1110 ''
+1110 1011 1001 1111 ''
+1110 1011 1010 0000 /** 1110 1011 101d immm  SHA.L #IMM, dest */
+1110 1011 1010 0001 ''
+1110 1011 1010 0010 ''
+1110 1011 1010 0011 ''
+1110 1011 1010 0100 ''
+1110 1011 1010 0101 ''
+1110 1011 1010 0110 ''
+1110 1011 1010 0111 ''
+1110 1011 1010 1000 ''
+1110 1011 1010 1001 ''
+1110 1011 1010 1010 ''
+1110 1011 1010 1011 ''
+1110 1011 1010 1100 ''
+1110 1011 1010 1101 ''
+1110 1011 1010 1110 ''
+1110 1011 1010 1111 ''
+1110 1011 1011 0000 ''
+1110 1011 1011 0001 ''
+1110 1011 1011 0010 ''
+1110 1011 1011 0011 ''
+1110 1011 1011 0100 ''
+1110 1011 1011 0101 ''
+1110 1011 1011 0110 ''
+1110 1011 1011 0111 ''
+1110 1011 1011 1000 ''
+1110 1011 1011 1001 ''
+1110 1011 1011 1010 ''
+1110 1011 1011 1011 ''
+1110 1011 1011 1100 ''
+1110 1011 1011 1101 ''
+1110 1011 1011 1110 ''
+1110 1011 1011 1111 ''
+1110 1011 1100 0000 /** 1110 1011 11vector   INT #imm */
+1110 1011 1100 0001 ''
+1110 1011 1100 0010 ''
+1110 1011 1100 0011 ''
+1110 1011 1100 0100 ''
+1110 1011 1100 0101 ''
+1110 1011 1100 0110 ''
+1110 1011 1100 0111 ''
+1110 1011 1100 1000 ''
+1110 1011 1100 1001 ''
+1110 1011 1100 1010 ''
+1110 1011 1100 1011 ''
+1110 1011 1100 1100 ''
+1110 1011 1100 1101 ''
+1110 1011 1100 1110 ''
+1110 1011 1100 1111 ''
+1110 1011 1101 0000 ''
+1110 1011 1101 0001 ''
+1110 1011 1101 0010 ''
+1110 1011 1101 0011 ''
+1110 1011 1101 0100 ''
+1110 1011 1101 0101 ''
+1110 1011 1101 0110 ''
+1110 1011 1101 0111 ''
+1110 1011 1101 1000 ''
+1110 1011 1101 1001 ''
+1110 1011 1101 1010 ''
+1110 1011 1101 1011 ''
+1110 1011 1101 1100 ''
+1110 1011 1101 1101 ''
+1110 1011 1101 1110 ''
+1110 1011 1101 1111 ''
+1110 1011 1110 0000 ''
+1110 1011 1110 0001 ''
+1110 1011 1110 0010 ''
+1110 1011 1110 0011 ''
+1110 1011 1110 0100 ''
+1110 1011 1110 0101 ''
+1110 1011 1110 0110 ''
+1110 1011 1110 0111 ''
+1110 1011 1110 1000 ''
+1110 1011 1110 1001 ''
+1110 1011 1110 1010 ''
+1110 1011 1110 1011 ''
+1110 1011 1110 1100 ''
+1110 1011 1110 1101 ''
+1110 1011 1110 1110 ''
+1110 1011 1110 1111 ''
+1110 1011 1111 0000 ''
+1110 1011 1111 0001 ''
+1110 1011 1111 0010 ''
+1110 1011 1111 0011 ''
+1110 1011 1111 0100 ''
+1110 1011 1111 0101 ''
+1110 1011 1111 0110 ''
+1110 1011 1111 0111 ''
+1110 1011 1111 1000 ''
+1110 1011 1111 1001 ''
+1110 1011 1111 1010 ''
+1110 1011 1111 1011 ''
+1110 1011 1111 1100 ''
+1110 1011 1111 1101 ''
+1110 1011 1111 1110 ''
+1110 1011 1111 1111 ''
+1110 1100 /** 1110 1100            PUSHM src */
+1110 1101 /** 1110 1101            POPM dest */
+1110 1110 /** 1110 1110            JMPS #IMM8 */
+1110 1111 /** 1110 1111            JSRS #IMM8 */
+1111 0000 /** 1111 000w immm dest  SHA.size #IMM, dest */
+1111 0001 ''
+1111 0010 /** 1111 d010            DEC.W dest */
+1111 0011 /** 1111 0011            RTS */
+1111 0100 /** 1111 0100            JMP.W label */
+1111 0101 /** 1111 0101            JSR.W label */
+1111 0110 /** 1111 0110            INTO */
+1111 0111 unused
+1111 1000 /** 1111 100w immm dest  ADJNZ.size #IMM,dest,label */
+1111 1001 ''
+1111 1010 /** 1111 d010            DEC.W dest */
+1111 1011 /** 1111 1011            REIT */
+1111 1100 /** 1111 1100            JMP.A label */
+1111 1101 /** 1111 1101            JSR.A label */
+1111 1110 /** 1111 1110            JMP.B label */
+1111 1111 /** 1111 1111            UND */
