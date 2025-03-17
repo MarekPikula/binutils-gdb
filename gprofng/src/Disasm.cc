@@ -103,6 +103,14 @@ fprintf_styled_func (void *arg, enum disassembler_style st ATTRIBUTE_UNUSED,
   return cnt;
 }
 
+static bfd *
+get_obfd_for_addr_func (bfd_vma memaddr ATTRIBUTE_UNUSED,
+			     struct disassemble_info* info ATTRIBUTE_UNUSED)
+{
+  /* Not applicable in this context. */
+  return NULL;
+}
+
 /* Get LENGTH bytes from info's buffer, at target address memaddr.
    Transfer them to myaddr.  */
 static int
@@ -220,6 +228,7 @@ Disasm::disasm_open ()
   dis_info.flavour = bfd_target_unknown_flavour;
   dis_info.endian = BFD_ENDIAN_UNKNOWN;
   dis_info.endian_code = dis_info.endian;
+  dis_info.get_obfd_for_addr_func = get_obfd_for_addr_func;
   dis_info.octets_per_byte = 1;
   dis_info.disassembler_needs_relocs = FALSE;
   dis_info.fprintf_func = fprintf_func;
@@ -319,9 +328,8 @@ Disasm::get_disasm (uint64_t inst_address, uint64_t end_address,
 		dis_info.buffer_length, dis_info.buffer);
 
   dis_str->setLength (0);
-  bfd abfd;
   disassembler_ftype disassemble = disassembler (dis_info.arch, dis_info.endian,
-						 dis_info.mach, &abfd);
+						 dis_info.mach);
   if (disassemble == NULL)
     {
       printf ("ERROR: unsupported disassemble\n");

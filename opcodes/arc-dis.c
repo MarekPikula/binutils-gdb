@@ -955,7 +955,7 @@ arc_opcode_to_insn_type (const struct arc_opcode *opcode)
 
 /* Disassemble ARC instructions.  */
 
-static int
+int
 print_insn_arc (bfd_vma memaddr,
 		struct disassemble_info *info)
 {
@@ -973,6 +973,17 @@ print_insn_arc (bfd_vma memaddr,
   struct arc_operand_iterator iter;
   struct arc_disassemble_info *arc_infop;
   bool rpcl = false, rset = false;
+
+  /* BFD my be absent, if opcodes is invoked from the debugger that
+     has connected to remote target and doesn't have an ELF file.  */
+  if (info->abfd != NULL)
+    {
+      /* Read the extension insns and registers, if any.  */
+      build_ARC_extmap (info->abfd);
+#ifdef DEBUG
+      dump_ARC_extmap ();
+#endif
+    }
 
   if (info->private_data == NULL)
     {
@@ -1426,24 +1437,6 @@ print_insn_arc (bfd_vma memaddr,
     }
 
   return insn_len;
-}
-
-
-disassembler_ftype
-arc_get_disassembler (bfd *abfd)
-{
-  /* BFD my be absent, if opcodes is invoked from the debugger that
-     has connected to remote target and doesn't have an ELF file.  */
-  if (abfd != NULL)
-    {
-      /* Read the extension insns and registers, if any.  */
-      build_ARC_extmap (abfd);
-#ifdef DEBUG
-      dump_ARC_extmap ();
-#endif
-    }
-
-  return print_insn_arc;
 }
 
 /* Indices into option argument vector for options that do require

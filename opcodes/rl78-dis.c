@@ -380,7 +380,7 @@ print_insn_rl78_common (bfd_vma addr, disassemble_info * dis, RL78_Dis_Isa isa)
 }
 
 int
-print_insn_rl78 (bfd_vma addr, disassemble_info * dis)
+print_insn_rl78_default (bfd_vma addr, disassemble_info * dis)
 {
   return print_insn_rl78_common (addr, dis, RL78_ISA_DEFAULT);
 }
@@ -403,7 +403,7 @@ print_insn_rl78_g14 (bfd_vma addr, disassemble_info * dis)
   return print_insn_rl78_common (addr, dis, RL78_ISA_G14);
 }
 
-disassembler_ftype
+static disassembler_ftype
 rl78_get_disassembler (bfd *abfd)
 {
   int cpu = E_FLAG_RL78_ANY_CPU;
@@ -420,6 +420,12 @@ rl78_get_disassembler (bfd *abfd)
     case E_FLAG_RL78_G14:
       return print_insn_rl78_g14;
     default:
-      return print_insn_rl78;
+      return print_insn_rl78_default;
     }
+}
+
+int
+print_insn_rl78 (bfd_vma addr, disassemble_info * dis)
+{
+  return rl78_get_disassembler(dis->abfd)(addr, dis);
 }

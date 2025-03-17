@@ -114,7 +114,7 @@ print_insn (ARMword instr)
 
   opbuf[0] = 0;
   info.application_data = & instr;
-  disassemble_fn = disassembler (bfd_arch_arm, 0, 0, NULL);
+  disassemble_fn = disassembler (bfd_arch_arm, 0, 0);
   size = disassemble_fn (0, & info);
   fprintf (stderr, " %*s\n", size, opbuf);
 }
@@ -344,6 +344,7 @@ sim_create_inferior (SIM_DESC sd ATTRIBUTE_UNUSED,
   info.endian_code = BFD_ENDIAN_LITTLE;
   if (info.mach == 0)
     info.arch = bfd_arch_arm;
+  info.abfd = abfd;
   disassemble_init_for_target (& info);
 
   if (argv != NULL)

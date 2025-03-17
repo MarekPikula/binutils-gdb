@@ -223,6 +223,7 @@ sim_get_current_source_location (const char **  pfilename,
       info.mach = bfd_get_mach (current_bfd);
       if (info.mach == 0)
 	info.arch = bfd_arch_rl78;
+      info.abfd = current_bfd;
 
       disassemble_init_for_target (& info);
 
@@ -284,7 +285,7 @@ sim_disasm_one (void)
       else if (g13_multiply)
 	rl78_disasm_fn = print_insn_rl78_g13;
       else
-	rl78_disasm_fn = print_insn_rl78;
+	rl78_disasm_fn = print_insn_rl78_default;
     }
 
   if (filename && functionname && lineno)

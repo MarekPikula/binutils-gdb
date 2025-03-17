@@ -23,6 +23,7 @@
 
 extern int print_insn_aarch64		(bfd_vma, disassemble_info *);
 extern int print_insn_alpha		(bfd_vma, disassemble_info *);
+extern int print_insn_arc		(bfd_vma, disassemble_info *);
 extern int print_insn_avr		(bfd_vma, disassemble_info *);
 extern int print_insn_bfin		(bfd_vma, disassemble_info *);
 extern int print_insn_big_arm		(bfd_vma, disassemble_info *);
@@ -30,6 +31,7 @@ extern int print_insn_big_mips		(bfd_vma, disassemble_info *);
 extern int print_insn_big_powerpc	(bfd_vma, disassemble_info *);
 extern int print_insn_big_score         (bfd_vma, disassemble_info *);
 extern int print_insn_cr16              (bfd_vma, disassemble_info *);
+extern int print_insn_cris              (bfd_vma, disassemble_info *);
 extern int print_insn_crx               (bfd_vma, disassemble_info *);
 extern int print_insn_csky		(bfd_vma, disassemble_info *);
 extern int print_insn_d10v		(bfd_vma, disassemble_info *);
@@ -51,6 +53,7 @@ extern int print_insn_ia64		(bfd_vma, disassemble_info *);
 extern int print_insn_ip2k		(bfd_vma, disassemble_info *);
 extern int print_insn_iq2000		(bfd_vma, disassemble_info *);
 extern int print_insn_riscv		(bfd_vma, disassemble_info *);
+extern int print_insn_rl78		(bfd_vma, disassemble_info *);
 extern int print_insn_kvx	        (bfd_vma, disassemble_info *);
 extern int print_insn_little_arm	(bfd_vma, disassemble_info *);
 extern int print_insn_little_mips	(bfd_vma, disassemble_info *);
@@ -99,9 +102,6 @@ extern int print_insn_z80		(bfd_vma, disassemble_info *);
 extern int print_insn_z8001		(bfd_vma, disassemble_info *);
 extern int print_insn_z8002		(bfd_vma, disassemble_info *);
 extern int print_insn_loongarch		(bfd_vma, disassemble_info *);
-
-extern disassembler_ftype csky_get_disassembler (bfd *);
-extern disassembler_ftype rl78_get_disassembler (bfd *);
 
 extern void disassemble_free_riscv (disassemble_info *);
 extern void disassemble_free_powerpc (disassemble_info *);

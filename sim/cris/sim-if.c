@@ -321,7 +321,7 @@ cris_set_section_offset_iterator (bfd *abfd, asection *s, void *vp)
   if ((bfd_section_flags (s) & SEC_ALLOC))
     {
       bfd_vma vma = bfd_section_vma (s);
-      
+
       bfd_set_section_vma (s, vma + offset);
     }
 
@@ -429,7 +429,7 @@ cris_get_progbounds (struct bfd *abfd, struct progbounds *pbp)
       if (phdr[i].p_memsz > phdr[i].p_filesz
 	  && phdr[i].p_paddr + phdr[i].p_filesz < pbp->start_nonloadmem)
 	pbp->start_nonloadmem = phdr[i].p_paddr + phdr[i].p_filesz;
-    }  
+    }
 }
 
 /* Parameter communication by static variables, hmm...  Oh well, for
@@ -1012,7 +1012,6 @@ cris_disassemble_insn (SIM_CPU *cpu,
 		       const ARGBUF *abuf ATTRIBUTE_UNUSED,
 		       IADDR pc, char *buf)
 {
-  disassembler_ftype pinsn;
   struct disassemble_info disasm_info;
   SFILE sfile;
   SIM_DESC sd = CPU_STATE (cpu);
@@ -1022,9 +1021,9 @@ cris_disassemble_insn (SIM_CPU *cpu,
 			 (fprintf_ftype) sim_disasm_sprintf,
 			 (fprintf_styled_ftype) sim_disasm_styled_sprintf);
   disasm_info.endian = BFD_ENDIAN_LITTLE;
+  disasm_info.abfd = STATE_PROG_BFD (sd);
   disasm_info.read_memory_func = sim_disasm_read_memory;
   disasm_info.memory_error_func = sim_disasm_perror_memory;
   disasm_info.application_data = cpu;
-  pinsn = cris_get_disassembler (STATE_PROG_BFD (sd));
-  (*pinsn) (pc, &disasm_info);
+  print_insn_cris (pc, &disasm_info);
 }
