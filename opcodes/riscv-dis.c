@@ -1371,7 +1371,7 @@ riscv_disassemble_data (bfd_vma memaddr ATTRIBUTE_UNUSED,
 }
 
 static bool
-riscv_init_disasm_info (struct disassemble_info *info)
+riscv_init_disasm_info (bfd_vma memaddr, struct disassemble_info *info)
 {
   int i;
   struct riscv_private_data *pd =
@@ -1403,25 +1403,22 @@ riscv_init_disasm_info (struct disassemble_info *info)
   pd->riscv_rps_dis.isa_spec = &pd->default_isa_spec;
   pd->riscv_rps_dis.check_unknown_prefixed_ext = false;
   pd->default_arch = "rv64gc";
-  if (info->section != NULL)
+
+  bfd *obfd = info->get_obfd_for_addr_func(memaddr, info);
+  if (obfd && bfd_get_flavour (obfd) == bfd_target_elf_flavour)
     {
-      bfd *abfd = info->section->owner;
-      if (abfd && bfd_get_flavour (abfd) == bfd_target_elf_flavour)
+      const char *sec_name = get_elf_backend_data (obfd)->obj_attrs_section;
+      if (bfd_get_section_by_name (obfd, sec_name) != NULL)
 	{
-	  const char *sec_name =
-		get_elf_backend_data (abfd)->obj_attrs_section;
-	  if (bfd_get_section_by_name (abfd, sec_name) != NULL)
-	    {
-	      obj_attribute *attr = elf_known_obj_attributes_proc (abfd);
-	      unsigned int Tag_a = Tag_RISCV_priv_spec;
-	      unsigned int Tag_b = Tag_RISCV_priv_spec_minor;
-	      unsigned int Tag_c = Tag_RISCV_priv_spec_revision;
-	      riscv_get_priv_spec_class_from_numbers (attr[Tag_a].i,
-						      attr[Tag_b].i,
-						      attr[Tag_c].i,
-						      &pd->default_priv_spec);
-	      pd->default_arch = attr[Tag_RISCV_arch].s;
-	    }
+	  obj_attribute *attr = elf_known_obj_attributes_proc (obfd);
+	  unsigned int Tag_a = Tag_RISCV_priv_spec;
+	  unsigned int Tag_b = Tag_RISCV_priv_spec_minor;
+	  unsigned int Tag_c = Tag_RISCV_priv_spec_revision;
+	  riscv_get_priv_spec_class_from_numbers (attr[Tag_a].i,
+						  attr[Tag_b].i,
+						  attr[Tag_c].i,
+						  &pd->default_priv_spec);
+	  pd->default_arch = attr[Tag_RISCV_arch].s;
 	}
     }
 
@@ -1470,7 +1467,7 @@ print_insn_riscv (bfd_vma memaddr, struct disassemble_info *info)
   int (*riscv_disassembler) (bfd_vma, insn_t, const bfd_byte *,
 			     struct disassemble_info *);
 
-  if (info->private_data == NULL && !riscv_init_disasm_info (info))
+  if (info->private_data == NULL && !riscv_init_disasm_info (memaddr, info))
     return -1;
 
   if (info->disassembler_options != NULL)
