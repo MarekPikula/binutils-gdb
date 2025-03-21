@@ -66,7 +66,7 @@ struct riscv_private_data
   const char (*riscv_fpr_names)[NRC];
   /* If set, disassemble as most general instruction.  */
   bool no_aliases;
-  /* If set, disassemble without checking architectire string, just like what
+  /* If set, disassemble without checking architecture string, just like what
      we did at the beginning.  */
   bool all_ext;
 };
@@ -1574,6 +1574,9 @@ static struct
   riscv_option_arg_t arg;
 } riscv_options[] =
 {
+  { "max",
+    N_("Disassemble without checking architecture string."),
+    RISCV_OPTION_ARG_NONE },
   { "numeric",
     N_("Print numeric register names, rather than ABI names."),
     RISCV_OPTION_ARG_NONE },
