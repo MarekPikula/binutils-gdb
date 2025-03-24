@@ -55,6 +55,8 @@ struct riscv_private_data
   /* Default architecture string for the object file.  It will be changed once
      elf architecture attribute exits.  This is used for mapping symbol $x.  */
   const char* default_arch;
+  /* Force usage of default-arch instead of taking it from ELF. */
+  bool default_arch_force;
   /* Used for mapping symbols.  */
   int last_map_symbol;
   bfd_vma last_stop_offset;
@@ -71,6 +73,25 @@ struct riscv_private_data
   bool all_ext;
 };
 
+/* Decide if we need to parse the architecture string again, also record the
+   string into the current subset list.  */
+
+static bool
+riscv_dis_parse_subset (struct disassemble_info *info, const char *arch_new)
+{
+  bool ret = true;
+  struct riscv_private_data *pd = info->private_data;
+  const char *arch_subset_list = pd->riscv_rps_dis.subset_list->arch_str;
+  if (arch_subset_list == NULL || strcmp (arch_subset_list, arch_new) != 0)
+    {
+      riscv_release_subset_list (pd->riscv_rps_dis.subset_list);
+      ret = riscv_parse_subset (&pd->riscv_rps_dis, arch_new);
+      riscv_arch_str (pd->xlen, pd->riscv_rps_dis.subset_list,
+		      true/* update */);
+    }
+  return ret;
+}
+
 /* Set default RISC-V disassembler options.  */
 
 static void
@@ -80,6 +101,10 @@ set_default_riscv_dis_options (struct disassemble_info *info)
   pd->riscv_gpr_names = riscv_gpr_names_abi;
   pd->riscv_fpr_names = riscv_fpr_names_abi;
   pd->no_aliases = false;
+  pd->default_arch = "rv64gc";
+  pd->default_arch_force = false;
+
+  riscv_dis_parse_subset (info, pd->default_arch);
 }
 
 /* Parse RISC-V disassembler option (without arguments).  */
@@ -98,6 +123,8 @@ parse_riscv_dis_option_without_args (const char *option,
     }
   else if (strcmp (option, "max") == 0)
     pd->all_ext = true;
+  else if (strcmp (option, "default-arch-force") == 0)
+    pd->default_arch_force = true;
   else
     return false;
   return true;
@@ -108,7 +135,9 @@ parse_riscv_dis_option_without_args (const char *option,
 static void
 parse_riscv_dis_option (const char *option, struct disassemble_info *info)
 {
-  char *equal, *value;
+  const char *equal, *value;
+  size_t name_len;
+  struct riscv_private_data *pd = info->private_data;
 
   if (parse_riscv_dis_option_without_args (option, info))
     return;
@@ -130,11 +159,10 @@ parse_riscv_dis_option (const char *option, struct disassemble_info *info)
       return;
     }
 
-  *equal = '\0';
+  name_len = equal - option;
   value = equal + 1;
-  if (strcmp (option, "priv-spec") == 0)
+  if (strncmp (option, "priv-spec", name_len) == 0)
     {
-      struct riscv_private_data *pd = info->private_data;
       enum riscv_spec_class priv_spec = PRIV_SPEC_CLASS_NONE;
       const char *name = NULL;
 
@@ -150,6 +178,17 @@ parse_riscv_dis_option (const char *option, struct disassemble_info *info)
 	  opcodes_error_handler (_("mis-matched privilege spec set by %s=%s, "
 				   "the elf privilege attribute is %s"),
 				 option, value, name);
+	}
+    }
+  else if (strncmp (option, "default-arch", name_len) == 0)
+    {
+      pd->default_arch = value;
+      if (!riscv_dis_parse_subset (info, value))
+	{
+	  opcodes_error_handler (_("unrecognized ISA subset: %s; "
+				   "using default: rv64gc"), value);
+	  pd->default_arch = "rv64gc";
+	  riscv_dis_parse_subset (info, pd->default_arch);
 	}
     }
   else
@@ -1051,23 +1090,6 @@ riscv_disassemble_insn (bfd_vma memaddr,
   return insnlen;
 }
 
-/* Decide if we need to parse the architecture string again, also record the
-   string into the current subset list.  */
-
-static void
-riscv_dis_parse_subset (struct disassemble_info *info, const char *arch_new)
-{
-  struct riscv_private_data *pd = info->private_data;
-  const char *arch_subset_list = pd->riscv_rps_dis.subset_list->arch_str;
-  if (arch_subset_list == NULL || strcmp (arch_subset_list, arch_new) != 0)
-    {
-      riscv_release_subset_list (pd->riscv_rps_dis.subset_list);
-      riscv_parse_subset (&pd->riscv_rps_dis, arch_new);
-      riscv_arch_str (pd->xlen, pd->riscv_rps_dis.subset_list,
-		      true/* update */);
-    }
-}
-
 /* If we find the suitable mapping symbol update the STATE.
    Otherwise, do nothing.  */
 
@@ -1420,7 +1442,10 @@ riscv_init_disasm_info (struct disassemble_info *info)
 						      attr[Tag_b].i,
 						      attr[Tag_c].i,
 						      &pd->default_priv_spec);
-	      pd->default_arch = attr[Tag_RISCV_arch].s;
+	      if (!pd->default_arch_force)
+		{
+		  pd->default_arch = attr[Tag_RISCV_arch].s;
+		}
 	    }
 	}
     }
@@ -1564,6 +1589,7 @@ typedef enum
 {
   RISCV_OPTION_ARG_NONE = -1,
   RISCV_OPTION_ARG_PRIV_SPEC,
+  RISCV_OPTION_ARG_DEFAULT_ARCH,
 
   RISCV_OPTION_ARG_COUNT
 } riscv_option_arg_t;
@@ -1585,7 +1611,13 @@ static struct
     RISCV_OPTION_ARG_NONE },
   { "priv-spec=",
     N_("Print the CSR according to the chosen privilege spec."),
-    RISCV_OPTION_ARG_PRIV_SPEC }
+    RISCV_OPTION_ARG_PRIV_SPEC },
+  { "default-arch=",
+    N_("Set a default ISA subset if not possible to deduce from ELF."),
+    RISCV_OPTION_ARG_DEFAULT_ARCH },
+  { "default-arch-force",
+    N_("Force usage of default-arch instead of taking it from ELF."),
+    RISCV_OPTION_ARG_NONE }
 };
 
 /* Build the structure representing valid RISCV disassembler options.
@@ -1616,6 +1648,9 @@ disassembler_options_riscv (void)
           = riscv_priv_specs[i].name;
       /* The array we return must be NULL terminated.  */
       args[RISCV_OPTION_ARG_PRIV_SPEC].values[i] = NULL;
+
+      args[RISCV_OPTION_ARG_DEFAULT_ARCH].name = "ARCH";
+      args[RISCV_OPTION_ARG_DEFAULT_ARCH].values = NULL;
 
       /* The array we return must be NULL terminated.  */
       args[num_args].name = NULL;
